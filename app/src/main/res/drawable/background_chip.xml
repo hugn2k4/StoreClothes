@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Khi nhấn -->
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/purple_main" />
+            <corners android:radius="50dp" />
+            <elevation android:value="4dp" />
+        </shape>
+    </item>
+
+    <!-- Khi không nhấn -->
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/purple_light" />
+            <corners android:radius="50dp" />
+            <elevation android:value="4dp" />
+        </shape>
+    </item>
+</selector>
