@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        tools:context=".ui.RegisterActivity">
+        tools:context=".ui.Authentication.RegisterActivity">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabBack"
