@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Product;
+package com.example.storeclothes.ui.Order;
 
 import android.os.Bundle;
 

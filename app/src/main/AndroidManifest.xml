@@ -25,7 +25,7 @@
             android:name=".ui.Product.ProductDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.Product.OrderActivity"
+            android:name=".ui.Order.OrderActivity"
             android:exported="false" />
         <activity
             android:name=".ui.Authentication.RegisterActivity"
