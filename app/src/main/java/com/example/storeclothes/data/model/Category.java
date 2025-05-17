@@ -11,6 +11,8 @@ public class Category {
         this.name = name;
         this.imageUrl = imageUrl;
     }
+    public Category() {
+    }
 
     // Getter and Setter methods
     public String getCategoryId() {
