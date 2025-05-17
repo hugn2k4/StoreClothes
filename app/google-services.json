@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726068773226",
+    "project_id": "projectdesignpattern",
+    "storage_bucket": "projectdesignpattern.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726068773226:android:8cd499a08c6650eb546513",
+        "android_client_info": {
+          "package_name": "com.example.storeclothes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA02ZCsFsA87AoZ9jVYB3YV-dPUecMzU9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
