@@ -78,7 +78,7 @@
 
                 <!-- Tên sản phẩm -->
                 <TextView
-                    android:id="@+id/textViewNameProduct"
+                    android:id="@+id/tvNameProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -91,7 +91,7 @@
 
                 <!-- Giá sản phẩm -->
                 <TextView
-                    android:id="@+id/textViewPriceProduct"
+                    android:id="@+id/tvPriceProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -286,7 +286,7 @@
 
                 <!-- Mô tả sản phẩm -->
                 <TextView
-                    android:id="@+id/txtDescription"
+                    android:id="@+id/tvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

@@ -1,0 +1,142 @@
+@startuml
+'====== Lớp Người dùng ======
+class User {
+  - userId: String
+  - name: String
+  - email: String
+  - password: String
+  - birthdate: Date
+  - isVerified: Boolean
+  - role: String
+}
+
+class Admin {
+}
+
+User <|-- Admin
+
+'====== Danh mục sản phẩm ======
+class Category {
+  - categoryId: String
+  - name: String
+}
+
+'====== Sản phẩm và ảnh ======
+class Product {
+  - productId: String
+  - name: String
+  - description: String
+  - price: Double
+  - categoryId: String
+}
+
+class ProductImage {
+  - imageId: String
+  - productId: String
+  - imageUrl: String
+}
+
+Product "1" -- "0..*" ProductImage : has
+Product "1" --> "1" Category
+
+'====== Giỏ hàng ======
+class Cart {
+  - cartId: String
+  - userId: String
+}
+
+class CartItem {
+  - cartItemId: String
+  - cartId: String
+  - productId: String
+  - quantity: Int
+}
+
+User "1" --> "0..1" Cart
+Cart "1" --> "0..*" CartItem
+CartItem "1" --> "1" Product
+
+'====== Đơn hàng và địa chỉ ======
+class Order {
+  - orderId: String
+  - userId: String
+  - orderDate: Date
+  - status: String
+  - totalAmount: Double
+}
+
+class OrderItem {
+  - orderItemId: String
+  - orderId: String
+  - productId: String
+  - quantity: Int
+  - price: Double
+}
+
+class ShippingAddress {
+  - addressId: String
+  - orderId: String
+  - fullName: String
+  - phone: String
+  - addressLine: String
+  - city: String
+  - postalCode: String
+}
+
+Order "1" --> "1..*" OrderItem
+Order "1" --> "1" ShippingAddress
+OrderItem "1" --> "1" Product
+User "1" --> "0..*" Order
+
+'====== Đánh giá ======
+class Review {
+  - reviewId: String
+  - userId: String
+  - productId: String
+  - rating: Int
+  - comment: String
+  - date: Date
+}
+
+User "1" --> "0..*" Review
+Product "1" --> "0..*" Review
+
+'====== Yêu thích sản phẩm ======
+class Wishlist {
+  - wishlistId: String
+  - userId: String
+  - productId: String
+}
+
+User "1" --> "0..*" Wishlist
+Product "1" --> "0..*" Wishlist
+
+'====== Thanh toán ======
+class PaymentMethod {
+  - methodId: String
+  - name: String
+}
+
+Order "1" --> "1" PaymentMethod
+
+'====== Mã giảm giá ======
+class Voucher {
+  - voucherId: String
+  - code: String
+  - discountAmount: Double
+  - expiryDate: Date
+}
+
+Order "0..1" --> "0..1" Voucher
+
+'====== Thông báo ======
+class Notification {
+  - notificationId: String
+  - userId: String
+  - message: String
+  - isRead: Boolean
+  - createdAt: Date
+}
+
+User "1" --> "0..*" Notification
+@enduml
