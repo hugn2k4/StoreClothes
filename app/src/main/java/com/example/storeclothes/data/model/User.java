@@ -15,6 +15,7 @@ public class User {
     private String phone;    // Thêm trường phone
 
     // Constructor
+    public User() {}
     public User(String userId, String firstName, String lastName, String email, String password, Date birthdate, Boolean isVerified, String role, String address, String phone) {
         this.userId = userId;
         this.firstName = firstName;
@@ -108,5 +109,20 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", birthdate=" + birthdate +
+                ", isVerified=" + isVerified +
+                ", role='" + role + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

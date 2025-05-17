@@ -27,9 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
         if (isLoggedIn) {
-            String userUid = sharedPreferences.getString("user_uid", "");
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            intent.putExtra("user_uid", userUid);
             startActivity(intent);
             finish();
         }

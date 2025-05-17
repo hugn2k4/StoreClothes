@@ -29,7 +29,6 @@ public class PasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_password);
         email = getIntent().getStringExtra("email");
         initViews();
-
         setClickListeners();
     }
     private void initViews() {
@@ -64,7 +63,6 @@ public class PasswordActivity extends AppCompatActivity {
 
                 Toast.makeText(PasswordActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(PasswordActivity.this, HomeActivity.class);
-                intent.putExtra("user_uid", user.getUid());
                 startActivity(intent);
                 finish();
             }
