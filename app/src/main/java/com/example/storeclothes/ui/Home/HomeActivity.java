@@ -196,6 +196,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onSuccess(List<Product> products) {
                 ProductAdapter productAdapter = new ProductAdapter(HomeActivity.this, products, product -> {
                     Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
+                    intent.putExtra("user_id", userUid);
                     intent.putExtra("product_id", product.getProductId());
                     startActivity(intent);
                 });
@@ -211,5 +212,10 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void openActivity(Class<?> activityClass) {
         startActivity(new Intent(this, activityClass));
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadProductData();
     }
 }

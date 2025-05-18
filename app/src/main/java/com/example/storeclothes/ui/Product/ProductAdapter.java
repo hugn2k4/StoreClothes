@@ -1,9 +1,12 @@
 package com.example.storeclothes.ui.Product;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.Product;
+import com.example.storeclothes.data.model.Wishlist;
+import com.example.storeclothes.data.service.WishlistService;
 
 import java.util.List;
 
@@ -21,11 +26,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private Context context;
     private List<Product> productList;
     private OnProductClickListener listener;
+    private String userUid;
 
     public ProductAdapter(Context context, List<Product> productList, OnProductClickListener listener) {
         this.context = context;
         this.productList = productList;
         this.listener = listener;
+        userUid = context.getSharedPreferences("user_prefs", MODE_PRIVATE).getString("user_uid", null);
     }
 
     @NonNull
@@ -62,6 +69,59 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 listener.onProductClick(product);
             }
         });
+
+        String wishlistId = userUid + "_" + product.getProductId();
+        WishlistService.getInstance().getWishlistByUser(userUid, new WishlistService.OnWishlistListListener() {
+            @Override
+            public void onSuccess(List<Wishlist> wishlists) {
+                boolean isFavorite = false;
+                for (Wishlist w : wishlists) {
+                    if (w.getProductId().equals(product.getProductId())) {
+                        isFavorite = true;
+                        break;
+                    }
+                }
+                holder.btnFavorite.setTag(isFavorite);
+
+                holder.btnFavorite.setImageResource(
+                        isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
+                );
+
+                holder.btnFavorite.setOnClickListener(v -> {
+                    boolean currentFavorite = (boolean) holder.btnFavorite.getTag();
+                    if (currentFavorite) {
+                        // Xoá
+                        WishlistService.getInstance().removeFromWishlist(wishlistId, new WishlistService.OnWishlistActionListener() {
+                            @Override
+                            public void onSuccess() {
+                                holder.btnFavorite.setImageResource(R.drawable.ic_favorite_border);
+                                holder.btnFavorite.setTag(false); // cập nhật lại
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {}
+                        });
+                    } else {
+                        // Thêm
+                        Wishlist wishlist = new Wishlist(wishlistId, userUid, product.getProductId());
+                        WishlistService.getInstance().addToWishlist(wishlist, new WishlistService.OnWishlistActionListener() {
+                            @Override
+                            public void onSuccess() {
+                                holder.btnFavorite.setImageResource(R.drawable.ic_favorite_filled);
+                                holder.btnFavorite.setTag(true); // cập nhật lại
+                            }
+                            @Override
+                            public void onFailure(String errorMessage) {}
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Xử lý lỗi nếu cần
+            }
+        });
     }
 
     @Override
@@ -76,12 +136,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
         TextView txtProductName, txtProductPrice;
+        ImageButton btnFavorite;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
             txtProductName = itemView.findViewById(R.id.txtProductName);
             txtProductPrice = itemView.findViewById(R.id.txtProductPrice);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
         }
     }
 }

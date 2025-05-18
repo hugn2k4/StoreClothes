@@ -11,6 +11,8 @@ public class Wishlist {
         this.userId = userId;
         this.productId = productId;
     }
+    public Wishlist() {
+    }
 
     // Getter and Setter methods
     public String getWishlistId() {

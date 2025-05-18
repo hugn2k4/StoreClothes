@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.Product;
+import com.example.storeclothes.data.model.Wishlist;
 import com.example.storeclothes.data.service.ProductService;
+import com.example.storeclothes.data.service.WishlistService;
 import com.example.storeclothes.ui.Home.HomeActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,7 +22,8 @@ import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private String productId;
+    private String productId,userUid ;
+    private boolean isFavorite = false;
     private FloatingActionButton fabFavorite, fabBack;
     private TextView tvNameProduct, tvPriceProduct, tvDescription;
     private RecyclerView recyclerViewImage;
@@ -29,6 +32,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         productId = getIntent().getStringExtra("product_id");
+        userUid = getIntent().getStringExtra("user_id");
         if (productId == null) {
             finish();
             return;
@@ -63,6 +67,67 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Toast.makeText(ProductDetailActivity.this, "Không thể lấy sản phẩm: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        String wishlistId = userUid + "_" + productId;
+
+        WishlistService.getInstance().getWishlistByUser(userUid, new WishlistService.OnWishlistListListener() {
+            @Override
+            public void onSuccess(List<Wishlist> wishlists) {
+                for (Wishlist w : wishlists) {
+                    if (w.getProductId().equals(productId)) {
+                        isFavorite = true;
+                        break;
+                    }
+                }
+                updateFavoriteIcon();
+                setupFavoriteClickListener(wishlistId, productId);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Xử lý lỗi nếu cần
+            }
+        });
+
     }
+    private void updateFavoriteIcon() {
+        fabFavorite.setImageResource(
+                isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
+        );
+    }
+    private void setupFavoriteClickListener(String wishlistId, String productId) {
+        fabFavorite.setOnClickListener(v -> {
+            if (isFavorite) {
+                WishlistService.getInstance().removeFromWishlist(wishlistId, new WishlistService.OnWishlistActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        isFavorite = false;
+                        updateFavoriteIcon();
+                        Toast.makeText(ProductDetailActivity.this, "Đã xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(ProductDetailActivity.this, "Lỗi xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Wishlist wishlist = new Wishlist(wishlistId, userUid, productId);
+                WishlistService.getInstance().addToWishlist(wishlist, new WishlistService.OnWishlistActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        isFavorite = true;
+                        updateFavoriteIcon();
+                        Toast.makeText(ProductDetailActivity.this, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(ProductDetailActivity.this, "Lỗi thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
 
 }

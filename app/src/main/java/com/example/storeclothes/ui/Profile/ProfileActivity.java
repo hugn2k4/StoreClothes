@@ -4,27 +4,62 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.storeclothes.R;
+import com.example.storeclothes.data.model.User;
+import com.example.storeclothes.data.service.UserService;
 import com.example.storeclothes.ui.Authentication.LoginActivity;
+import com.example.storeclothes.ui.Home.HomeActivity;
+import com.example.storeclothes.ui.Wishlist.WishlistActivity;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView textSignOut;
+    private String userUid;
+    private UserService userService;
+    private FloatingActionButton fabBack;
+    private TextView textSignOut, tvName;
+    private MaterialButton btnInformation, btnWishlist, btnLanguage, btnSetting, btnSupport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        userUid = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("user_uid", null);
+        userService = UserService.getInstance();
+        loadUserData();
         initViews();
         setClickListeners();
     }
+    private void loadUserData() {
+        if (userUid != null && !userUid.isEmpty()) {
+            userService.getUserById(userUid, new UserService.OnUserFetchListener() {
+                @Override
+                public void onSuccess(User user) {
+                    if (user != null) {
+                        tvName.setText(user.getLastName() + " " + user.getFirstName());
+                    }
+                }
+                @Override
+                public void onFailure(String error) {
+                    Toast.makeText(ProfileActivity.this, "Không thể lấy thông tin người dùng: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
     public void initViews() {
+        tvName = findViewById(R.id.tvName);
         textSignOut = findViewById(R.id.textSignOut);
+        fabBack = findViewById(R.id.fabBack);
+        btnWishlist = findViewById(R.id.btnWishlist);
     }
     public void setClickListeners() {
         textSignOut.setOnClickListener(v -> handleSignOut());
+        fabBack.setOnClickListener(v -> finish());
+        btnWishlist.setOnClickListener(v -> openActivity(WishlistActivity.class));
     }
     public void handleSignOut(){
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -36,5 +71,8 @@ public class ProfileActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+    private void openActivity(Class<?> activityClass) {
+        startActivity(new Intent(this, activityClass));
     }
 }
