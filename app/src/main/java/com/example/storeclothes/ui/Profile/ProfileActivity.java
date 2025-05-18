@@ -16,6 +16,7 @@ import com.example.storeclothes.ui.Home.HomeActivity;
 import com.example.storeclothes.ui.Wishlist.WishlistActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        userUid = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("user_uid", null);
+        userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userService = UserService.getInstance();
         loadUserData();
         initViews();
@@ -55,11 +56,13 @@ public class ProfileActivity extends AppCompatActivity {
         textSignOut = findViewById(R.id.textSignOut);
         fabBack = findViewById(R.id.fabBack);
         btnWishlist = findViewById(R.id.btnWishlist);
+        btnInformation = findViewById(R.id.btnInformation);
     }
     public void setClickListeners() {
         textSignOut.setOnClickListener(v -> handleSignOut());
         fabBack.setOnClickListener(v -> finish());
         btnWishlist.setOnClickListener(v -> openActivity(WishlistActivity.class));
+        btnInformation.setOnClickListener(v -> openActivity(InformationActivity.class));
     }
     public void handleSignOut(){
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
