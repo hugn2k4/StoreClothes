@@ -16,6 +16,7 @@ import com.example.storeclothes.data.service.ProductService;
 import com.example.storeclothes.data.service.WishlistService;
 import com.example.storeclothes.ui.Home.HomeActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
         productId = getIntent().getStringExtra("product_id");
         userUid = getIntent().getStringExtra("user_id");
+//        userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (productId == null) {
             finish();
             return;

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.Category;
 import com.example.storeclothes.data.model.Product;
@@ -22,8 +24,10 @@ import com.example.storeclothes.ui.Category.CategoryAdapter;
 import com.example.storeclothes.ui.Order.OrderActivity;
 import com.example.storeclothes.ui.Product.ProductAdapter;
 import com.example.storeclothes.ui.Product.ProductDetailActivity;
+import com.example.storeclothes.ui.Profile.InformationActivity;
 import com.example.storeclothes.ui.Profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,33 +39,23 @@ public class HomeActivity extends AppCompatActivity {
     private UserService userService;
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerViewCategory, recyclerViewProductTopSelling, recyclerViewProductNewIn;
+    private ImageView avatarImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        userUid = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("user_uid", null);
+        userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userService = UserService.getInstance();
 //        addSampleProducts();
 //        addSampleCategories();
         initViews();
         setupRecyclerView();
+        setupClickListeners();
         loadUserData();
         loadCategoryData();
         loadProductData();
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
-                return true;
-            } else if (itemId == R.id.nav_notification) {
-                openActivity(HomeActivity.class);
-            } else if (itemId == R.id.nav_order) {
-                openActivity(OrderActivity.class);
-            } else if (itemId == R.id.nav_profile) {
-                openActivity(ProfileActivity.class);
-            }
-            return true;
-        });
+
     }
     private void addSampleProducts() {
         List<Product> products = Arrays.asList(
@@ -148,11 +142,28 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewCategory = findViewById(R.id.recyclerViewCategory);
         recyclerViewProductNewIn = findViewById(R.id.recyclerViewProductsNewIn);
         recyclerViewProductTopSelling = findViewById(R.id.recyclerViewProductsTopSelling);
+        avatarImageView = findViewById(R.id.ibtnAvata);
     }
     private void setupRecyclerView(){
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewProductNewIn.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewProductTopSelling.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    }
+    private void setupClickListeners() {
+        avatarImageView.setOnClickListener(v -> openActivity(InformationActivity.class));
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                return true;
+            } else if (itemId == R.id.nav_notification) {
+                openActivity(HomeActivity.class);
+            } else if (itemId == R.id.nav_order) {
+                openActivity(OrderActivity.class);
+            } else if (itemId == R.id.nav_profile) {
+                openActivity(ProfileActivity.class);
+            }
+            return true;
+        });
     }
     private void loadUserData() {
         if (userUid != null && !userUid.isEmpty()) {
@@ -161,6 +172,12 @@ public class HomeActivity extends AppCompatActivity {
                 public void onSuccess(User user) {
                     if (user != null) {
                         tvGreeting.setText("Hi, " + user.getFirstName() );
+                    }
+                    if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+                        Glide.with(HomeActivity.this)
+                                .load(user.getAvatarUrl())
+                                .placeholder(R.drawable.ic_loading)
+                                .into(avatarImageView);
                     }
                 }
                 @Override
@@ -216,6 +233,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        loadUserData();
         loadProductData();
     }
 }

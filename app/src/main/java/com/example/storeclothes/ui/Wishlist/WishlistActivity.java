@@ -17,6 +17,7 @@ import com.example.storeclothes.data.service.WishlistService;
 import com.example.storeclothes.ui.Product.ProductAdapter;
 import com.example.storeclothes.ui.Product.ProductDetailActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class WishlistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
-        userUid = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("user_uid", null);
+        userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         initViews();
         setupRecyclerView();
         setupClickListeners();
