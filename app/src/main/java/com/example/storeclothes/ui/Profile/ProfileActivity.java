@@ -3,11 +3,13 @@ package com.example.storeclothes.ui.Profile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.User;
 import com.example.storeclothes.data.service.UserService;
@@ -25,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FloatingActionButton fabBack;
     private TextView textSignOut, tvName;
     private MaterialButton btnInformation, btnWishlist, btnLanguage, btnSetting, btnSupport;
+    private ImageView imageViewAvata;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,12 @@ public class ProfileActivity extends AppCompatActivity {
                     if (user != null) {
                         tvName.setText(user.getLastName() + " " + user.getFirstName());
                     }
+                    if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+                        Glide.with(ProfileActivity.this)
+                                .load(user.getAvatarUrl())
+                                .placeholder(R.drawable.ic_loading)
+                                .into(imageViewAvata);
+                    }
                 }
                 @Override
                 public void onFailure(String error) {
@@ -57,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
         fabBack = findViewById(R.id.fabBack);
         btnWishlist = findViewById(R.id.btnWishlist);
         btnInformation = findViewById(R.id.btnInformation);
+        imageViewAvata = findViewById(R.id.imageViewAvata);
     }
     public void setClickListeners() {
         textSignOut.setOnClickListener(v -> handleSignOut());

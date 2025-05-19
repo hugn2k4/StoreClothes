@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.Category;
 import com.example.storeclothes.data.model.Product;
@@ -171,6 +172,12 @@ public class HomeActivity extends AppCompatActivity {
                 public void onSuccess(User user) {
                     if (user != null) {
                         tvGreeting.setText("Hi, " + user.getFirstName() );
+                    }
+                    if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+                        Glide.with(HomeActivity.this)
+                                .load(user.getAvatarUrl())
+                                .placeholder(R.drawable.ic_loading)
+                                .into(avatarImageView);
                     }
                 }
                 @Override
