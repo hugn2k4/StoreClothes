@@ -1,49 +1,55 @@
 package com.example.storeclothes.data.model;
 
 public class CartItem {
-    private String cartItemId;
-    private String cartId;
     private String productId;
     private int quantity;
+    private String size;
+    private String color;
 
-    // Constructor
-    public CartItem(String cartItemId, String cartId, String productId, int quantity) {
-        this.cartItemId = cartItemId;
-        this.cartId = cartId;
-        this.productId = productId;
-        this.quantity = quantity;
+    private CartItem(Builder builder) {
+        this.productId = builder.productId;
+        this.quantity = builder.quantity;
+        this.size = builder.size;
+        this.color = builder.color;
     }
 
-    // Getter and Setter methods
-    public String getCartItemId() {
-        return cartItemId;
+    public static class Builder {
+        private String productId;
+        private int quantity;
+        private String size;
+        private String color;
+
+        public Builder setProductId(String productId) {
+            this.productId = productId;
+            return this;
+        }
+
+        public Builder setQuantity(int quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Builder setSize(String size) {
+            this.size = size;
+            return this;
+        }
+
+        public Builder setColor(String color) {
+            this.color = color;
+            return this;
+        }
+
+        public CartItem build() {
+            return new CartItem(this);
+        }
     }
 
-    public void setCartItemId(String cartItemId) {
-        this.cartItemId = cartItemId;
-    }
+    // Getters (bắt buộc nếu dùng Firestore)
+    public CartItem() {} // Constructor rỗng để Firestore deserialize
 
-    public String getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public String getProductId() { return productId; }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public String getSize() { return size; }
+    public String getColor() { return color; }
 }

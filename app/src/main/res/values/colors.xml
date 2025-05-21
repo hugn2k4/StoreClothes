@@ -13,4 +13,9 @@
     <color name="red">#FF0000</color>
     <color name="purple_dark">#3700B3</color>
     <color name="purple_light">#BB86FC</color>
+    <color name="red_custom">#D8E64B4B</color>
+    <color name="blue_custom">#E103A9F4</color>
+    <color name="green_custom">#E82BB02B</color>
+    <color name="yellow_custom">#DCFAE84F</color>
+    <color name="white_custom">#FFFFFFFF</color>
 </resources>
