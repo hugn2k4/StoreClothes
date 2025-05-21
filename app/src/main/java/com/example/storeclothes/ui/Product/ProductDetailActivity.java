@@ -19,9 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storeclothes.R;
+import com.example.storeclothes.data.model.CartItem;
 import com.example.storeclothes.data.model.ColorItem;
 import com.example.storeclothes.data.model.Product;
 import com.example.storeclothes.data.model.Wishlist;
+import com.example.storeclothes.data.service.CartRepository;
 import com.example.storeclothes.data.service.ProductService;
 import com.example.storeclothes.data.service.WishlistService;
 import com.google.android.material.button.MaterialButton;
@@ -92,13 +94,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         cardSize.setOnClickListener(v -> openSizeDialog(size));
         btnIncrease.setOnClickListener(v -> increaseQuantity());
         btnDecrease.setOnClickListener(v -> decreaseQuantity());
+        cardButton.setOnClickListener(v->handleAddToCart());
     }
     private void loadProductDetails(String productId) {
         ProductService.getInstance().getProductById(productId, new ProductService.OnProductDetailListener() {
             @Override
             public void onSuccess(Product product) {
                 tvNameProduct.setText(product.getName());
-                tvPriceProduct.setText("$" + String.format("%,d", product.getPrice().intValue()));
+                tvPriceProduct.setText("$" + String.format("%.2f", product.getPrice()));
                 tvDescription.setText(product.getDescription());
                 recyclerViewImage.setAdapter(new ImageAdapter(ProductDetailActivity.this, product.getImages()));
             }
@@ -238,7 +241,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
     private void increaseQuantity() {
         if (quantity < 10) {
             quantity++;
@@ -250,5 +252,28 @@ public class ProductDetailActivity extends AppCompatActivity {
             quantity--;
             tvQuantity.setText(String.valueOf(quantity));
         }
+    }
+
+    private void handleAddToCart() {
+        CartRepository cartRepo = new CartRepository();
+
+        CartItem newItem = new CartItem.Builder()
+                .setProductId(productId)
+                .setQuantity(quantity)
+                .setSize(size)
+                .setColor(color)
+                .build();
+
+        cartRepo.addToCart(newItem, new CartRepository.OnCartUpdateListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(ProductDetailActivity.this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(ProductDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

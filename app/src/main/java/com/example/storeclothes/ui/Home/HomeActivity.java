@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.example.storeclothes.data.model.User;
 import com.example.storeclothes.data.service.CategoryService;
 import com.example.storeclothes.data.service.ProductService;
 import com.example.storeclothes.data.service.UserService;
+import com.example.storeclothes.ui.Cart.CartActivity;
 import com.example.storeclothes.ui.Category.CategoryAdapter;
 import com.example.storeclothes.ui.Order.OrderActivity;
 import com.example.storeclothes.ui.Product.ProductAdapter;
@@ -27,6 +29,7 @@ import com.example.storeclothes.ui.Product.ProductDetailActivity;
 import com.example.storeclothes.ui.Profile.InformationActivity;
 import com.example.storeclothes.ui.Profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
@@ -40,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerViewCategory, recyclerViewProductTopSelling, recyclerViewProductNewIn;
     private ImageView avatarImageView;
+    private ShapeableImageView ibtnCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +147,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewProductNewIn = findViewById(R.id.recyclerViewProductsNewIn);
         recyclerViewProductTopSelling = findViewById(R.id.recyclerViewProductsTopSelling);
         avatarImageView = findViewById(R.id.ibtnAvata);
+        ibtnCart = findViewById(R.id.ibtnCart);
     }
     private void setupRecyclerView(){
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -164,6 +169,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             return true;
         });
+        ibtnCart.setOnClickListener(v -> openActivity(CartActivity.class));
     }
     private void loadUserData() {
         if (userUid != null && !userUid.isEmpty()) {

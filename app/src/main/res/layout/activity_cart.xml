@@ -74,7 +74,7 @@
                 android:background="?attr/selectableItemBackground" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recyclerViewCartItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp" />
@@ -157,6 +157,21 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/etShippingAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_background"
+                android:hint="Enter Shipping Address"
+                android:inputType="none"
+                android:clickable="true"
+                android:focusable="false"
+                android:padding="12dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -168,10 +183,14 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/purple_main"
         android:text="Checkout"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="@color/purple_200"
-        app:shapeAppearanceOverlay="@style/rounded_button_style"
-        tools:layout_editor_absoluteX="8dp" />
+        app:shapeAppearanceOverlay="@style/rounded_button_style" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

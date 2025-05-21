@@ -1,32 +1,44 @@
 package com.example.storeclothes.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cart {
-    private String cartId;
     private String userId;
+    private List<CartItem> cartItems;
 
-    // Constructor
-    public Cart(String cartId, String userId) {
-        this.cartId = cartId;
-        this.userId = userId;
+    private Cart(Builder builder) {
+        this.userId = builder.userId;
+        this.cartItems = builder.cartItems;
     }
 
-    // Getter for cartId
-    public String getCartId() {
-        return cartId;
+    public static class Builder {
+        private String userId;
+        private List<CartItem> cartItems = new ArrayList<>();
+
+        public Builder setUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder setCartItems(List<CartItem> cartItems) {
+            this.cartItems = cartItems;
+            return this;
+        }
+
+        public Builder addItem(CartItem item) {
+            this.cartItems.add(item);
+            return this;
+        }
+
+        public Cart build() {
+            return new Cart(this);
+        }
     }
 
-    // Setter for cartId
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
-    }
+    // Getters và constructor rỗng để Firestore deserialize
+    public Cart() {}
 
-    // Getter for userId
-    public String getUserId() {
-        return userId;
-    }
-
-    // Setter for userId
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public String getUserId() { return userId; }
+    public List<CartItem> getCartItems() { return cartItems; }
 }
