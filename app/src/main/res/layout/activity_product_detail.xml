@@ -187,14 +187,16 @@
                             android:textSize="16sp"
                             android:textStyle="normal" />
 
-                        <ImageView
-                            android:id="@+id/colorIndicator"
+
+                        <View
+                            android:id="@+id/colorPreview"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:layout_marginEnd="24dp"
                             android:layout_weight="1"
+                            android:layout_marginEnd="24dp"
                             android:gravity="end"
-                            android:src="@drawable/circle_yellow" />
+                            android:background="@drawable/color_circle"
+                            />
 
                         <ImageView
                             android:layout_width="wrap_content"
