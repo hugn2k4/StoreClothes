@@ -55,17 +55,18 @@
                     android:textStyle="bold"
                     />
             </LinearLayout>
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageViewAvata"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
+                android:layout_gravity="center"
                 android:scaleType="fitCenter"
                 app:shapeAppearance="@style/RoundedImageView"
                 app:srcCompat="@drawable/avata"
                 app:strokeColor="@android:color/white"
-                app:strokeWidth="2dp"
-                android:layout_gravity="center"
-                />
+                app:strokeWidth="2dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUpload"
                 android:layout_width="wrap_content"
