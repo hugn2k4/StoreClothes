@@ -6,12 +6,13 @@ public class Review {
     private String reviewId;
     private String userId;
     private String productId;
-    private int rating;
+    private double rating;
     private String comment;
     private Date date;
 
     // Constructor
-    public Review(String reviewId, String userId, String productId, int rating, String comment, Date date) {
+    public Review(){}
+    public Review(String reviewId, String userId, String productId, double rating, String comment, Date date) {
         this.reviewId = reviewId;
         this.userId = userId;
         this.productId = productId;
@@ -45,11 +46,11 @@ public class Review {
         this.productId = productId;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

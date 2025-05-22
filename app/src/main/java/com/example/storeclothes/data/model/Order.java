@@ -1,81 +1,90 @@
 package com.example.storeclothes.data.model;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class Order {
     private String orderId;
     private String userId;
-    private Date orderDate;
+    private List<OrderItem> items;
+    private double totalAmount;
+    private double shippingFee;
     private String status;
-    private Double totalAmount;
-    private Long paymentMethodId;
-    private String voucherId;
+    private Date orderDate;
 
-    // Constructor
-    public Order(String orderId, String userId, Date orderDate, String status, Double totalAmount, Long paymentMethodId, String voucherId) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.orderDate = orderDate;
-        this.status = status;
-        this.totalAmount = totalAmount;
-        this.paymentMethodId = paymentMethodId;
-        this.voucherId = voucherId;
+    // Constructor cho Firestore
+    public Order() {}
+
+    private Order(Builder builder) {
+        this.orderId = builder.orderId;
+        this.userId = builder.userId;
+        this.items = builder.items;
+        this.totalAmount = builder.totalAmount;
+        this.shippingFee = builder.shippingFee;
+        this.status = builder.status;
+        this.orderDate = builder.orderDate;
     }
 
-    // Getter and Setter methods
-    public String getOrderId() {
-        return orderId;
-    }
-
+    // Getters
+    public String getOrderId() { return orderId; }
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
+    public String getUserId() { return userId; }
+    public List<OrderItem> getItems() { return items; }
+    public double getTotalAmount() { return totalAmount; }
+    public double getShippingFee() { return shippingFee; }
+    public String getStatus() { return status; }
+    public Date getOrderDate() { return orderDate; }
 
-    public String getUserId() {
-        return userId;
-    }
+    // Builder pattern
+    public static class Builder {
+        private String orderId = UUID.randomUUID().toString();
+        private String userId;
+        private List<OrderItem> items;
+        private double totalAmount;
+        private double shippingFee;
+        private String status;
+        private Date orderDate;
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+        public Builder setOrderId(String orderId) {
+            this.orderId = orderId;
+            return this;
+        }
 
-    public Date getOrderDate() {
-        return orderDate;
-    }
+        public Builder setUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
+        public Builder setItems(List<OrderItem> items) {
+            this.items = items;
+            return this;
+        }
 
-    public String getStatus() {
-        return status;
-    }
+        public Builder setTotalAmount(double totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+        public Builder setShippingFee(double shippingFee) {
+            this.shippingFee = shippingFee;
+            return this;
+        }
 
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
+        public Builder setStatus(String status) {
+            this.status = status;
+            return this;
+        }
 
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+        public Builder setOrderDate(Date orderDate) {
+            this.orderDate = orderDate;
+            return this;
+        }
 
-    public Long getPaymentMethodId() {
-        return paymentMethodId;
-    }
-
-    public void setPaymentMethodId(Long paymentMethodId) {
-        this.paymentMethodId = paymentMethodId;
-    }
-
-    public String getVoucherId() {
-        return voucherId;
-    }
-
-    public void setVoucherId(String voucherId) {
-        this.voucherId = voucherId;
+        public Order build() {
+            return new Order(this);
+        }
     }
 }
