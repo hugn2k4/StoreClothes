@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/rounded_background">
+
+    <!-- Tiêu đề của Dialog -->
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Address"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Danh sách địa chỉ, có thể là RecyclerView -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Nút Continue -->
+        <EditText
+            android:id="@+id/etNewAddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@drawable/rounded_background"
+            android:hint="Enter new address"
+            android:padding="12dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddNewAddress"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_main"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:rippleColor="@color/purple_200"
+            app:shapeAppearanceOverlay="@style/rounded_button_style" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAddresses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnContinue"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:backgroundTint="@color/purple_main"
+        android:text="Continue"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:rippleColor="@color/purple_200"
+        app:shapeAppearanceOverlay="@style/rounded_button_style" />
+</LinearLayout>
