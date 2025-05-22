@@ -1,4 +1,4 @@
-package com.example.storeclothes.firebase;
+package com.example.storeclothes.data.firebase;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,7 @@ import com.example.storeclothes.data.firebase.FirebaseFirestoreSingleton;
 import com.example.storeclothes.data.model.User;
 import com.example.storeclothes.ui.Authentication.LoginActivity;
 import com.example.storeclothes.ui.Authentication.PasswordActivity;
+import com.example.storeclothes.ui.Manager.ManagerActivity;
 import com.example.storeclothes.ui.Home.HomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

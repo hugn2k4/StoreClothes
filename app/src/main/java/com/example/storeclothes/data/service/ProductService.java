@@ -35,6 +35,28 @@ public class ProductService {
                     listener.onFailure(e.getMessage());
                 });
     }
+    
+    public void updateProduct(Product product, OnProductUpdateListener listener) {
+        firestore.collection("products")
+                .document(product.getProductId())
+                .set(product)
+                .addOnSuccessListener(aVoid -> listener.onSuccess())
+                .addOnFailureListener(e -> {
+                    Log.e("ProductService", "Failed to update product", e);
+                    listener.onFailure(e.getMessage());
+                });
+    }
+    
+    public void deleteProduct(String productId, OnProductDeleteListener listener) {
+        firestore.collection("products")
+                .document(productId)
+                .delete()
+                .addOnSuccessListener(aVoid -> listener.onSuccess())
+                .addOnFailureListener(e -> {
+                    Log.e("ProductService", "Failed to delete product", e);
+                    listener.onFailure(e.getMessage());
+                });
+    }
     public void getProductListFromFirebase(OnProductListListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("products")
@@ -71,6 +93,17 @@ public class ProductService {
         void onSuccess();
         void onFailure(String error);
     }
+    
+    public interface OnProductUpdateListener {
+        void onSuccess();
+        void onFailure(String error);
+    }
+    
+    public interface OnProductDeleteListener {
+        void onSuccess();
+        void onFailure(String error);
+    }
+    
     public interface OnProductListListener {
         void onSuccess(List<Product> products);
         void onFailure(Exception e);

@@ -7,10 +7,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.storeclothes.firebase.Authentication;
+import com.example.storeclothes.data.firebase.Authentication;
 
 import com.example.storeclothes.R;
+import com.example.storeclothes.data.model.User;
+import com.example.storeclothes.data.service.UserService;
 import com.example.storeclothes.ui.Home.HomeActivity;
+import com.example.storeclothes.ui.Manager.ManagerActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -55,16 +58,44 @@ public class PasswordActivity extends AppCompatActivity {
         Authentication.getInstance().loginUser(PasswordActivity.this, email, password, new Authentication.LoginCallback() {
             @Override
             public void onLoginSuccess(FirebaseUser user) {
+                // Lưu thông tin đăng nhập vào SharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("user_uid",  user.getUid());
+                editor.putString("user_uid", user.getUid());
                 editor.putBoolean("is_logged_in", true);
                 editor.apply();
 
-                Toast.makeText(PasswordActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(PasswordActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+                // Kiểm tra vai trò người dùng từ Firestore
+                UserService.getInstance().getUserById(user.getUid(), new UserService.OnUserFetchListener() {
+                    @Override
+                    public void onSuccess(User user) {
+                        String role = user.getRole();
+                        editor.putString("user_role", role);
+                        editor.apply();
+                        
+                        Toast.makeText(PasswordActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                        
+                        // Chuyển hướng dựa trên vai trò
+                        Intent intent;
+                        if ("MANAGER".equals(role)) {
+                            intent = new Intent(PasswordActivity.this, ManagerActivity.class);
+                        } else {
+                            // Mặc định là CUSTOMER hoặc vai trò khác
+                            intent = new Intent(PasswordActivity.this, HomeActivity.class);
+                        }
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        // Nếu không lấy được thông tin vai trò, mặc định chuyển đến HomeActivity
+                        Toast.makeText(PasswordActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PasswordActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
             @Override
             public void onLoginFailure(String errorMessage) {
