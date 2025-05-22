@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCategory, recyclerViewProductTopSelling, recyclerViewProductNewIn;
     private ImageView avatarImageView;
     private ShapeableImageView ibtnCart;
+    private EditText edtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +150,8 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewProductTopSelling = findViewById(R.id.recyclerViewProductsTopSelling);
         avatarImageView = findViewById(R.id.ibtnAvata);
         ibtnCart = findViewById(R.id.ibtnCart);
+        edtSearch = findViewById(R.id.edtSearch);
+        edtSearch.setFocusable(false);
     }
     private void setupRecyclerView(){
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -170,6 +174,7 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
         ibtnCart.setOnClickListener(v -> openActivity(CartActivity.class));
+        edtSearch.setOnClickListener(v -> openActivity(SearchActivity.class));
     }
     private void loadUserData() {
         if (userUid != null && !userUid.isEmpty()) {
