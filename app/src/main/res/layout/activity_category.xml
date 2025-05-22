@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
+                android:gravity="end"
                 android:padding="8dp">
 
                 <com.google.android.material.button.MaterialButton
@@ -88,6 +88,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingTop="3dp"
                     android:background="@drawable/background_chip"
                     android:text="Price"
                     android:drawableEnd="@drawable/ic_down"
@@ -99,6 +101,8 @@
                     android:id="@+id/chipSort"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingTop="3dp"
                     android:text="Sort by"
                     android:background="@drawable/background_chip"
                     android:layout_marginEnd="10dp"
@@ -106,15 +110,6 @@
                     android:textColor="@color/color_text"
                     app:backgroundTint="@color/background_gray"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/chipGender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:text="Man"
-                    android:background="@drawable/background_chip"
-                    android:drawableEnd="@drawable/ic_down"
-                    android:textColor="@color/color_text"
-                    app:backgroundTint="@color/background_gray"/>
             </LinearLayout>
 
             <!-- No products message - show when no products found -->

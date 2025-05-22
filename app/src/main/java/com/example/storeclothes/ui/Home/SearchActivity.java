@@ -69,7 +69,6 @@ public class SearchActivity extends AppCompatActivity {
         tvNoProducts = findViewById(R.id.tvNoProducts);
         chipPrice = findViewById(R.id.chipPrice);
         chipSort = findViewById(R.id.chipSort);
-        chipGender = findViewById(R.id.chipGender);
         recyclerViewProduct = findViewById(R.id.recyclerView);
         filterButtonsContainer = findViewById(R.id.filterButtonsContainer);
     }
