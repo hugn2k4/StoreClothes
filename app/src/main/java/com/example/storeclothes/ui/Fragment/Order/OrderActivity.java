@@ -1,5 +1,6 @@
 package com.example.storeclothes.ui.Fragment.Order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,7 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.Order;
+import com.example.storeclothes.ui.Adapter.OrderItemAdapter;
+import com.example.storeclothes.ui.Fragment.Home.HomeActivity;
+import com.example.storeclothes.ui.Fragment.Profile.ProfileActivity;
 import com.example.storeclothes.ui.ViewModel.OrderViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +31,7 @@ public class OrderActivity extends ComponentActivity {
     private RecyclerView recyclerView;
     private OrderItemAdapter adapter;
     private TextView tvEmptyOrders, tvRemoveAll;
+    private BottomNavigationView bottomNavigationView;
     private OrderViewModel viewModel;
     private List<Order> orders = new ArrayList<>();
 
@@ -61,6 +67,7 @@ public class OrderActivity extends ComponentActivity {
 
         tvEmptyOrders.setVisibility(View.GONE);
         tvRemoveAll.setVisibility(View.GONE);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
 
     private void setupListeners() {
@@ -69,8 +76,24 @@ public class OrderActivity extends ComponentActivity {
         tvRemoveAll.setOnClickListener(v -> {
             // TODO: Xử lý xóa tất cả đơn hàng nếu cần (có thể gọi ViewModel để xóa)
         });
+        bottomNavigationView.setSelectedItemId(R.id.nav_order);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                openActivity(HomeActivity.class);
+            } else if (itemId == R.id.nav_notification) {
+                openActivity(HomeActivity.class);
+            } else if (itemId == R.id.nav_order) {
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                openActivity(ProfileActivity.class);
+            }
+            return true;
+        });
     }
-
+    private void openActivity(Class<?> activityClass) {
+        startActivity(new Intent(this, activityClass));
+    }
     private void showNoUserUI() {
         recyclerView.setVisibility(View.GONE);
         tvEmptyOrders.setVisibility(View.VISIBLE);

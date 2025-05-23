@@ -12,8 +12,11 @@ import com.bumptech.glide.Glide;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.local.LocalStorageManager;
 import com.example.storeclothes.ui.Fragment.Authentication.LoginActivity;
+import com.example.storeclothes.ui.Fragment.Home.HomeActivity;
+import com.example.storeclothes.ui.Fragment.Order.OrderActivity;
 import com.example.storeclothes.ui.ViewModel.UserViewModel;
 import com.example.storeclothes.ui.Fragment.Wishlist.WishlistActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView textSignOut, tvName;
     private MaterialButton btnInformation, btnWishlist, btnLanguage, btnSetting, btnSupport;
     private ImageView imageViewAvata;
+    private BottomNavigationView bottomNavigationView;
     private UserViewModel userViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +64,27 @@ public class ProfileActivity extends AppCompatActivity {
         btnWishlist = findViewById(R.id.btnWishlist);
         btnInformation = findViewById(R.id.btnInformation);
         imageViewAvata = findViewById(R.id.imageViewAvata);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
     public void setClickListeners() {
         textSignOut.setOnClickListener(v -> handleSignOut());
         fabBack.setOnClickListener(v -> finish());
         btnWishlist.setOnClickListener(v -> openActivity(WishlistActivity.class));
         btnInformation.setOnClickListener(v -> openActivity(InformationActivity.class));
+        bottomNavigationView.setSelectedItemId(R.id.nav_profile);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                openActivity(HomeActivity.class);
+            } else if (itemId == R.id.nav_notification) {
+                openActivity(HomeActivity.class);
+            } else if (itemId == R.id.nav_order) {
+                openActivity(OrderActivity.class);
+            } else if (itemId == R.id.nav_profile) {
+                return true;
+            }
+            return true;
+        });
     }
     public void handleSignOut(){
         LocalStorageManager storage = new LocalStorageManager(getApplication());

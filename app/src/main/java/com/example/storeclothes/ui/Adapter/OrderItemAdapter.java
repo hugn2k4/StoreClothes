@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Order;
+package com.example.storeclothes.ui.Adapter;
 
 import android.content.Context;
 import android.content.Intent;

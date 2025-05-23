@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.Category;
 import com.example.storeclothes.data.model.Product;
-import com.example.storeclothes.ui.Fragment.Category.CategoryActivity;
 import com.example.storeclothes.ui.Fragment.Cart.CartActivity;
 import com.example.storeclothes.ui.Adapter.CategoryAdapter;
 import com.example.storeclothes.ui.Fragment.Order.OrderActivity;
@@ -75,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void setupClickListeners() {
         avatarImageView.setOnClickListener(v -> openActivity(InformationActivity.class));
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {
@@ -155,6 +155,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
         observeViewModel();
     }
 }

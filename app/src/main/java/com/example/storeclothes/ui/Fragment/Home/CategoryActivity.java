@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Category;
+package com.example.storeclothes.ui.Fragment.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
