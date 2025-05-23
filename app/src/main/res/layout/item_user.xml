@@ -59,6 +59,49 @@
             android:text="0123456789"
             android:textSize="14sp"
             android:visibility="visible" />
+            
+        <TextView
+            android:id="@+id/tvUserStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Hoạt động"
+            android:textColor="@color/teal_700"
+            android:textSize="14sp"
+            android:visibility="visible" />
+            
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center">
+            
+            <Button
+                android:id="@+id/btnToggleStatus"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:text="Vô hiệu hóa"
+                android:textSize="10sp"
+                android:backgroundTint="@color/purple_500"
+                android:textColor="@color/white" />
+                
+            <Button
+                android:id="@+id/btnDeleteUser"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Xóa"
+                android:textSize="10sp"
+                android:backgroundTint="@color/design_default_color_error"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
     </LinearLayout>
 

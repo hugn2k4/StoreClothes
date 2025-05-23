@@ -60,7 +60,8 @@ public class Authentication {
                                 "CUSTOMER",
                                 address,
                                 phone,
-                                null
+                                null,
+                                "active"
                         );
                         // Ghi dữ liệu lên Firestore
                         firestore.collection("users")

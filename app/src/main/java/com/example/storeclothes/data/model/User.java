@@ -14,13 +14,14 @@ public class User {
     private String address;
     private String phone;
     private String avatarUrl;
+    private String status; // Trạng thái người dùng: "active", "disabled"
 
     // Constructor mặc định
     public User() {}
 
     // Constructor đầy đủ
     public User(String userId, String firstName, String lastName, String email, String password,
-                Date birthdate, Boolean isVerified, String role, String address, String phone, String avatarUrl) {
+                Date birthdate, Boolean isVerified, String role, String address, String phone, String avatarUrl, String status) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,6 +33,7 @@ public class User {
         this.address = address;
         this.phone = phone;
         this.avatarUrl = avatarUrl;
+        this.status = status != null ? status : "active";
     }
 
     // Getter
@@ -46,6 +48,7 @@ public class User {
     public String getAddress() { return address; }
     public String getPhone() { return phone; }
     public String getAvatarUrl() { return avatarUrl; }
+    public String getStatus() { return status != null ? status : "active"; }
 
     // Setter
     public void setUserId(String userId) { this.userId = userId; }
@@ -59,4 +62,5 @@ public class User {
     public void setAddress(String address) { this.address = address; }
     public void setPhone(String phone) { this.phone = phone; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+    public void setStatus(String status) { this.status = status; }
 }

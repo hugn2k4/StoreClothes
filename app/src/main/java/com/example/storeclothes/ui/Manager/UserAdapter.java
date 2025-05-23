@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,9 +25,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private final Context context;
     private final List<User> users;
     private OnUserClickListener listener;
+    private OnUserActionListener actionListener;
 
     public interface OnUserClickListener {
         void onUserClick(User user, int position);
+    }
+    
+    public interface OnUserActionListener {
+        void onDeleteUser(User user, int position);
+        void onToggleUserStatus(User user, int position);
     }
 
     public UserAdapter(Context context, List<User> users) {
@@ -36,6 +43,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public void setOnUserClickListener(OnUserClickListener listener) {
         this.listener = listener;
+    }
+    
+    public void setOnUserActionListener(OnUserActionListener listener) {
+        this.actionListener = listener;
     }
 
     @NonNull
@@ -65,6 +76,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             holder.tvUserPhone.setVisibility(View.GONE);
         }
         
+        // Hiển thị trạng thái người dùng
+        String status = user.getStatus();
+        if (status != null) {
+            if (status.equals("active")) {
+                holder.tvUserStatus.setText("Hoạt động");
+                holder.tvUserStatus.setTextColor(ContextCompat.getColor(context, R.color.teal_700));
+                holder.btnToggleStatus.setText("Vô hiệu hóa");
+            } else if (status.equals("disabled")) {
+                holder.tvUserStatus.setText("Đã vô hiệu hóa");
+                holder.tvUserStatus.setTextColor(ContextCompat.getColor(context, R.color.red));
+                holder.btnToggleStatus.setText("Hủy vô hiệu hóa");
+            }
+        } else {
+            holder.tvUserStatus.setText("Hoạt động");
+            holder.tvUserStatus.setTextColor(ContextCompat.getColor(context, R.color.teal_700));
+            holder.btnToggleStatus.setText("Vô hiệu hóa");
+        }
+        
         // Hiển thị avatar người dùng
         if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
             Glide.with(context)
@@ -89,6 +118,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 listener.onUserClick(user, position);
             }
         });
+        
+        // Xử lý sự kiện click nút xóa
+        holder.btnDeleteUser.setOnClickListener(v -> {
+            if (actionListener != null) {
+                actionListener.onDeleteUser(user, position);
+            }
+        });
+        
+        // Xử lý sự kiện click nút vô hiệu hóa/hủy vô hiệu hóa
+        holder.btnToggleStatus.setOnClickListener(v -> {
+            if (actionListener != null) {
+                actionListener.onToggleUserStatus(user, position);
+            }
+        });
     }
 
     @Override
@@ -98,8 +141,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        TextView tvUserName, tvUserEmail, tvUserPhone;
+        TextView tvUserName, tvUserEmail, tvUserPhone, tvUserStatus;
         ImageView imgUserAvatar;
+        Button btnToggleStatus, btnDeleteUser;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,7 +151,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvUserEmail = itemView.findViewById(R.id.tvUserEmail);
             tvUserPhone = itemView.findViewById(R.id.tvUserPhone);
+            tvUserStatus = itemView.findViewById(R.id.tvUserStatus);
             imgUserAvatar = itemView.findViewById(R.id.imgUserAvatar);
+            btnToggleStatus = itemView.findViewById(R.id.btnToggleStatus);
+            btnDeleteUser = itemView.findViewById(R.id.btnDeleteUser);
         }
     }
 }

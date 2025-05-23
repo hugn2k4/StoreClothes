@@ -16,6 +16,7 @@ public class UserRepository {
     private final FirebaseFirestore firestore;
     private final MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     private UserRepository() {
         firestore = FirebaseFirestore.getInstance();
@@ -35,6 +36,10 @@ public class UserRepository {
 
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
+    }
+    
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
     }
 
     private void loadUsers() {
@@ -61,5 +66,52 @@ public class UserRepository {
 
     public void refreshCustomers() {
         loadUsers();
+    }
+    
+    // Xóa người dùng
+    public void deleteUser(User user, OnUserActionListener listener) {
+        isLoading.setValue(true);
+        
+        firestore.collection("users")
+                .document(user.getUserId())
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    isLoading.setValue(false);
+                    listener.onSuccess("Đã xóa người dùng thành công");
+                    refreshCustomers();
+                })
+                .addOnFailureListener(e -> {
+                    isLoading.setValue(false);
+                    listener.onFailure("Không thể xóa người dùng: " + e.getMessage());
+                });
+    }
+    
+    // Cập nhật trạng thái người dùng (vô hiệu hóa/kích hoạt)
+    public void updateUserStatus(User user, String newStatus, OnUserActionListener listener) {
+        isLoading.setValue(true);
+        
+        user.setStatus(newStatus);
+        
+        firestore.collection("users")
+                .document(user.getUserId())
+                .update("status", newStatus)
+                .addOnSuccessListener(aVoid -> {
+                    isLoading.setValue(false);
+                    String message = newStatus.equals("active") ? 
+                            "Đã kích hoạt người dùng thành công" : 
+                            "Đã vô hiệu hóa người dùng thành công";
+                    listener.onSuccess(message);
+                    refreshCustomers();
+                })
+                .addOnFailureListener(e -> {
+                    isLoading.setValue(false);
+                    listener.onFailure("Không thể cập nhật trạng thái người dùng: " + e.getMessage());
+                });
+    }
+    
+    // Interface callback cho các hành động trên người dùng
+    public interface OnUserActionListener {
+        void onSuccess(String message);
+        void onFailure(String errorMessage);
     }
 }
