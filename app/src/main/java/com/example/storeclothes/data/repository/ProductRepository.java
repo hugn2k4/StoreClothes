@@ -119,7 +119,26 @@ public class ProductRepository {
                 })
                 .addOnFailureListener(e -> onFailure.accept(e.getMessage()));
     }
-
+    public void getProductsByIds(List<String> productIds, Consumer<List<Product>> onSuccess, Consumer<String> onFailure) {
+        if (productIds.isEmpty()) {
+            onSuccess.accept(new ArrayList<>());
+            return;
+        }
+        firestore.collection("products")
+                .whereIn("productId", productIds)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Product> products = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot) {
+                        Product product = doc.toObject(Product.class);
+                        if (product != null) {
+                            products.add(product);
+                        }
+                    }
+                    onSuccess.accept(products);
+                })
+                .addOnFailureListener(e -> onFailure.accept(e.getMessage()));
+    }
     public Task<Void> addToWishlist(Wishlist wishlist) {
         return firestore.collection("wishlists").document(wishlist.getWishlistId()).set(wishlist);
     }
