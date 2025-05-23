@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.example.storeclothes.data.service.CategoryService;
 import com.example.storeclothes.data.service.ProductService;
 import com.example.storeclothes.data.service.UserService;
 import com.example.storeclothes.ui.Cart.CartActivity;
+import com.example.storeclothes.ui.Category.CategoryActivity;
 import com.example.storeclothes.ui.Category.CategoryAdapter;
 import com.example.storeclothes.ui.Order.OrderActivity;
 import com.example.storeclothes.ui.Product.ProductAdapter;
@@ -37,13 +39,14 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private TextView tvGreeting;
+    private TextView tvGreeting,tvSeeAllNewIn,tvSeeAllTopSelling;
     private String userUid;
     private UserService userService;
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerViewCategory, recyclerViewProductTopSelling, recyclerViewProductNewIn;
     private ImageView avatarImageView;
     private ShapeableImageView ibtnCart;
+    private EditText edtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,12 +145,16 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void initViews() {
         tvGreeting = findViewById(R.id.tvGreeting);
+        tvSeeAllNewIn = findViewById(R.id.tvSeeAllNewIn);
+        tvSeeAllTopSelling = findViewById(R.id.tvSeeAllTopSelling);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         recyclerViewCategory = findViewById(R.id.recyclerViewCategory);
         recyclerViewProductNewIn = findViewById(R.id.recyclerViewProductsNewIn);
         recyclerViewProductTopSelling = findViewById(R.id.recyclerViewProductsTopSelling);
         avatarImageView = findViewById(R.id.ibtnAvata);
         ibtnCart = findViewById(R.id.ibtnCart);
+        edtSearch = findViewById(R.id.edtSearch);
+        edtSearch.setFocusable(false);
     }
     private void setupRecyclerView(){
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -170,6 +177,9 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
         ibtnCart.setOnClickListener(v -> openActivity(CartActivity.class));
+        edtSearch.setOnClickListener(v -> openActivity(SearchActivity.class));
+        tvSeeAllNewIn.setOnClickListener(v -> openActivity(SearchActivity.class));
+        tvSeeAllTopSelling.setOnClickListener(v -> openActivity(SearchActivity.class));
     }
     private void loadUserData() {
         if (userUid != null && !userUid.isEmpty()) {
@@ -200,9 +210,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<Category> categories) {
                 CategoryAdapter categoryAdapter = new CategoryAdapter(HomeActivity.this, categories, category -> {
-//                    Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-//                    intent.putExtra("category_id", category.getCategoryId());
-//                    startActivity(intent);
+                    Intent intent = new Intent(HomeActivity.this, CategoryActivity.class);
+                    intent.putExtra("category_id", category.getCategoryId());
+                    intent.putExtra("category_name", category.getName());
+                    startActivity(intent);
                 });
                 recyclerViewCategory.setAdapter(categoryAdapter);
             }
