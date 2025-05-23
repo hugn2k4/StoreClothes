@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.storeclothes.firebase.Authentication;
+import com.example.storeclothes.data.firebase.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.storeclothes.R;
 import com.example.storeclothes.ui.Home.HomeActivity;
+import com.example.storeclothes.ui.Manager.ManagerActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -27,7 +28,15 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
         if (isLoggedIn) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            // Kiểm tra vai trò người dùng để chuyển hướng đến màn hình phù hợp
+            String userRole = sharedPreferences.getString("user_role", "CUSTOMER");
+            Intent intent;
+            if ("MANAGER".equals(userRole)) {
+                intent = new Intent(LoginActivity.this, ManagerActivity.class);
+            } else {
+                // Mặc định là CUSTOMER hoặc vai trò khác
+                intent = new Intent(LoginActivity.this, HomeActivity.class);
+            }
             startActivity(intent);
             finish();
         }

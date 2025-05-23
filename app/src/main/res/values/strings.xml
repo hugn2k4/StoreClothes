@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">StoreClothes</string>
+    <string name="navigation_drawer_open">Mở navigation drawer</string>
+    <string name="navigation_drawer_close">Đóng navigation drawer</string>
+    
+    <!-- Navigation Drawer Menu -->
+    <string name="nav_products">Quản lý sản phẩm</string>
+    <string name="nav_users">Quản lý người dùng</string>
+    <string name="nav_statistics">Thống kê</string>
+    <string name="nav_logout">Đăng xuất</string>
+    
+    <!-- User Management -->
+    <string name="user_role_admin">Quản trị viên</string>
+    <string name="user_role_user">Người dùng</string>
 </resources>

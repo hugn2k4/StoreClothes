@@ -11,6 +11,11 @@ public class Order {
     private Long paymentMethodId;
     private String voucherId;
 
+    // Constructor không tham số cho Firestore
+    public Order() {
+        // Constructor không tham số cần thiết cho Firebase Firestore
+    }
+
     // Constructor
     public Order(String orderId, String userId, Date orderDate, String status, Double totalAmount, Long paymentMethodId, String voucherId) {
         this.orderId = orderId;

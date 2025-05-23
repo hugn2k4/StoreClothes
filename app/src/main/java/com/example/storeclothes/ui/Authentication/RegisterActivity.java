@@ -3,7 +3,7 @@ package com.example.storeclothes.ui.Authentication;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.storeclothes.firebase.Authentication;
+import com.example.storeclothes.data.firebase.Authentication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.storeclothes.R;
@@ -58,6 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        // Đăng ký người dùng mới với vai trò mặc định là CUSTOMER
         Authentication.getInstance().registerUser(this, email, password, firstname, lastname, address, phone);
     }
 }
