@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="avatar_colors">
+        <item>#E57373</item> <!-- Red -->
+        <item>#F06292</item> <!-- Pink -->
+        <item>#BA68C8</item> <!-- Purple -->
+        <item>#9575CD</item> <!-- Deep Purple -->
+        <item>#7986CB</item> <!-- Indigo -->
+        <item>#64B5F6</item> <!-- Blue -->
+        <item>#4FC3F7</item> <!-- Light Blue -->
+        <item>#4DD0E1</item> <!-- Cyan -->
+        <item>#4DB6AC</item> <!-- Teal -->
+        <item>#81C784</item> <!-- Green -->
+        <item>#AED581</item> <!-- Light Green -->
+        <item>#FFD54F</item> <!-- Amber -->
+        <item>#FFB74D</item> <!-- Orange -->
+        <item>#FF8A65</item> <!-- Deep Orange -->
+    </array>
+</resources>
