@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            tools:context=".ui.Home.HomeActivity">
+            tools:context=".ui.Fragment.Home.HomeActivity">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ibtnAvata"
