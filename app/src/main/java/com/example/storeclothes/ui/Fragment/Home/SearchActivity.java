@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storeclothes.R;
-import com.example.storeclothes.ui.Fragment.Product.ProductAdapter;
+import com.example.storeclothes.ui.Adapter.ProductAdapter;
 import com.example.storeclothes.ui.Fragment.Product.ProductDetailActivity;
 import com.example.storeclothes.ui.ViewModel.SearchViewModel;
 import com.google.android.material.button.MaterialButton;

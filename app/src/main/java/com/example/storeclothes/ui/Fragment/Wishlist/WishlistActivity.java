@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storeclothes.R;
-import com.example.storeclothes.data.model.Product;
-import com.example.storeclothes.ui.Fragment.Product.ProductAdapter;
+import com.example.storeclothes.ui.Adapter.ProductAdapter;
 import com.example.storeclothes.ui.Fragment.Product.ProductDetailActivity;
+import com.example.storeclothes.ui.ViewModel.WishlistViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 

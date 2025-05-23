@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Product;
+package com.example.storeclothes.ui.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;

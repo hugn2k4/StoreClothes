@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Cart;
+package com.example.storeclothes.ui.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

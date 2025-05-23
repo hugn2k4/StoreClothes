@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Product;
+package com.example.storeclothes.ui.ViewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -46,26 +46,27 @@ public class ProductViewModel extends ViewModel {
         return productRepository.getProductsByCategory(categoryId);
     }
 
-    public void checkWishlistStatus(String userId, String productId) {
-        wishlistRepository.checkWishlistStatus(userId, productId).observeForever(wishlistStatus::setValue);
+    public LiveData<Boolean> checkWishlistStatus(String userId, String productId) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
+        wishlistRepository.checkWishlistStatus(userId, productId)
+                .observeForever(result::setValue);
+        return result;
     }
 
-    public void addToWishlist(Wishlist wishlist) {
+    public LiveData<Boolean> addToWishlist(Wishlist wishlist) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
         wishlistRepository.addToWishlist(wishlist)
-                .addOnSuccessListener(aVoid -> {
-                    wishlistActionSuccess.setValue(true);
-                    wishlistStatus.setValue(true);
-                })
-                .addOnFailureListener(e -> wishlistActionError.setValue("Lỗi thêm vào yêu thích: " + e.getMessage()));
+                .addOnSuccessListener(aVoid -> result.setValue(true))
+                .addOnFailureListener(e -> result.setValue(false));
+        return result;
     }
 
-    public void removeFromWishlist(String wishlistId) {
+    public LiveData<Boolean> removeFromWishlist(String wishlistId) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
         wishlistRepository.removeFromWishlist(wishlistId)
-                .addOnSuccessListener(aVoid -> {
-                    wishlistActionSuccess.setValue(true);
-                    wishlistStatus.setValue(false);
-                })
-                .addOnFailureListener(e -> wishlistActionError.setValue("Lỗi xoá khỏi yêu thích: " + e.getMessage()));
+                .addOnSuccessListener(aVoid -> result.setValue(true))
+                .addOnFailureListener(e -> result.setValue(false));
+        return result;
     }
 
     public void addToCart(String userId, CartItem item) {

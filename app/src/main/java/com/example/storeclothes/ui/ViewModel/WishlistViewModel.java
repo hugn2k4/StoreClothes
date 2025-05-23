@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Wishlist;
+package com.example.storeclothes.ui.ViewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

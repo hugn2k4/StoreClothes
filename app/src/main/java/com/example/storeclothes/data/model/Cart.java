@@ -41,4 +41,6 @@ public class Cart {
 
     public String getUserId() { return userId; }
     public List<CartItem> getCartItems() { return cartItems; }
+    public void setCartItems(List<CartItem> cartItems) { this.cartItems = cartItems; }
+
 }

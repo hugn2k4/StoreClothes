@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Home;
+package com.example.storeclothes.ui.ViewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
