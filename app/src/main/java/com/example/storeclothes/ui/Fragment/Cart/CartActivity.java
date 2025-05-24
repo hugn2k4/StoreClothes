@@ -190,7 +190,9 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
         btnAddNewAddress.setOnClickListener(v -> {
             String newAddress = etNewAddress.getText().toString().trim();
             if (!newAddress.isEmpty()) {
-                Address address = new Address(newAddress);
+                Address address = new Address.Builder()
+                        .setAddress(newAddress)
+                        .build();
                 cartViewModel.addAddress(address);
                 dialog.dismiss();
             } else {

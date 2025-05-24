@@ -24,11 +24,13 @@ import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.CartItem;
 import com.example.storeclothes.data.model.ColorItem;
 import com.example.storeclothes.data.model.Product;
+import com.example.storeclothes.data.model.Review;
 import com.example.storeclothes.data.model.Wishlist;
 import com.example.storeclothes.ui.Adapter.ColorAdapter;
 import com.example.storeclothes.ui.Adapter.ImageAdapter;
 import com.example.storeclothes.ui.Adapter.ProductAdapter;
 import com.example.storeclothes.ui.Adapter.SizeAdapter;
+import com.example.storeclothes.ui.Fragment.Product.ReviewAdapter;
 import com.example.storeclothes.ui.ViewModel.ProductViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -43,8 +45,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ProductViewModel viewModel;
     private String productId, userUid, categoryId;
     private boolean isFavorite = false;
-    private TextView tvName, tvPrice, tvDescription, tvSize, tvQuantity;
-    private RecyclerView rvImages, rvRelatedProducts;
+    private TextView tvName, tvPrice, tvDescription, tvSize, tvQuantity,txtRating, txtNumberReview;
+    private RecyclerView rvImages, recyclerViewReview;
     private MaterialCardView cardAddToCart, cardColor, cardSize;
     private View colorIndicator;
     private FloatingActionButton fabFavorite, fabBack;
@@ -52,6 +54,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private int quantity = 1;
     private String selectedColor = "White";
     private String selectedSize = "L";
+    private List<Review> reviewList;
 
     private final List<ColorItem> colorList = Arrays.asList(
             new ColorItem("White", R.color.white_custom),
@@ -92,6 +95,22 @@ public class ProductDetailActivity extends AppCompatActivity {
                         updateFavoriteIcon();
                     }
                 });
+        loadProductReviews();
+    }
+
+
+    private void loadProductReviews() {
+        viewModel.getReviewList().observe(this, reviews -> {
+            recyclerViewReview.setAdapter(new ReviewAdapter(this, reviews));
+            int totalReviews = reviews.size();
+            float totalRating = 0;
+            for (Review review : reviews) {
+                totalRating += review.getRating();
+            }
+            float averageRating = totalReviews > 0 ? totalRating / totalReviews : 5.0f;
+            txtRating.setText(String.format("%.1f Ratings", averageRating));
+            txtNumberReview.setText(String.format("%d Reviews", totalReviews));
+        });
     }
 
     private void initializeViews() {
@@ -109,11 +128,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnIncrease = findViewById(R.id.btnIncrease);
         btnDecrease = findViewById(R.id.btnDecrease);
         rvImages = findViewById(R.id.recyclerViewImage);
-        rvRelatedProducts = findViewById(R.id.recyclerViewReview);
-
+        recyclerViewReview = findViewById(R.id.recyclerViewReview);
+        txtRating = findViewById(R.id.txtRating);
+        txtNumberReview = findViewById(R.id.txtNumberReview);
         // Setup RecyclerViews
         rvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rvRelatedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewReview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Set initial values
         tvSize.setText(selectedSize);
@@ -130,21 +150,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 tvDescription.setText(product.getDescription());
                 rvImages.setAdapter(new ImageAdapter(this, product.getImages()));
                 categoryId = product.getCategoryId();
-                // Load related products
-                viewModel.getProductsByCategory(categoryId).observe(this, relatedProducts -> {
-                    if (relatedProducts != null) {
-                        List<Product> filteredProducts = relatedProducts.stream()
-                                .filter(p -> !p.getProductId().equals(productId))
-                                .collect(Collectors.toList());
-                        ProductAdapter adapter = new ProductAdapter(this, filteredProducts, p -> {
-                            Intent intent = new Intent(this, ProductDetailActivity.class);
-                            intent.putExtra("product_id", p.getProductId());
-                            intent.putExtra("user_id", userUid);
-                            startActivity(intent);
-                        });
-                        rvRelatedProducts.setAdapter(adapter);
-                    }
-                });
+                viewModel.loadReviews(productId);
             }
         });
 
@@ -217,7 +223,11 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Wishlist wishlist = new Wishlist(wishlistId, userUid, productId);
+            Wishlist wishlist = new Wishlist.Builder()
+                    .setWishlistId(wishlistId)
+                    .setUserId(userUid)
+                    .setProductId(productId)
+                    .build();
             viewModel.addToWishlist(wishlist).observe(this, success -> {
                 if (success != null && success) {
                     isFavorite = true;

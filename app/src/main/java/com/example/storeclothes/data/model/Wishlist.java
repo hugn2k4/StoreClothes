@@ -5,22 +5,15 @@ public class Wishlist {
     private String userId;
     private String productId;
 
-    // Constructor
-    public Wishlist(String wishlistId, String userId, String productId) {
-        this.wishlistId = wishlistId;
-        this.userId = userId;
-        this.productId = productId;
-    }
     public Wishlist() {
     }
-
-    // Getter and Setter methods
+    private Wishlist(Builder builder) {
+        this.wishlistId = builder.wishlistId;
+        this.userId = builder.userId;
+        this.productId = builder.productId;
+    }
     public String getWishlistId() {
         return wishlistId;
-    }
-
-    public void setWishlistId(String wishlistId) {
-        this.wishlistId = wishlistId;
     }
 
     public String getUserId() {
@@ -37,5 +30,32 @@ public class Wishlist {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public static class Builder {
+        private String wishlistId;
+        private String userId;
+        private String productId;
+
+        public Builder() {}
+
+        public Builder setWishlistId(String wishlistId) {
+            this.wishlistId = wishlistId;
+            return this;
+        }
+
+        public Builder setUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder setProductId(String productId) {
+            this.productId = productId;
+            return this;
+        }
+
+        public Wishlist build() {
+            return new Wishlist(this);
+        }
     }
 }

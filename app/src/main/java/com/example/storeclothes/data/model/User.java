@@ -15,10 +15,8 @@ public class User {
     private String phone;
     private String avatarUrl;
 
-    // Constructor mặc định
     public User() {}
 
-    // Constructor đầy đủ
     public User(String userId, String firstName, String lastName, String email, String password,
                 Date birthdate, Boolean isVerified, String role, String address, String phone, String avatarUrl) {
         this.userId = userId;

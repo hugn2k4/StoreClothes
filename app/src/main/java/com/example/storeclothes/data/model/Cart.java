@@ -35,8 +35,6 @@ public class Cart {
             return new Cart(this);
         }
     }
-
-    // Getters và constructor rỗng để Firestore deserialize
     public Cart() {}
 
     public String getUserId() { return userId; }

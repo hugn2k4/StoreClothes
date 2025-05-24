@@ -4,13 +4,10 @@ public class PaymentMethod {
     private String methodId;
     private String name;
 
-    // Constructor
     public PaymentMethod(String methodId, String name) {
         this.methodId = methodId;
         this.name = name;
     }
-
-    // Getter and Setter methods
     public String getMethodId() {
         return methodId;
     }
