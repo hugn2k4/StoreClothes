@@ -85,7 +85,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         setupObservers();
         setupClickListeners();
         viewModel.loadProductDetails(productId);
-        viewModel.checkWishlistStatus(userUid, productId);
+        viewModel.checkWishlistStatus(userUid, productId)
+                .observe(this, isFavorite -> {
+                    if (isFavorite != null) {
+                        this.isFavorite = isFavorite;
+                        updateFavoriteIcon();
+                    }
+                });
     }
 
     private void initializeViews() {
@@ -160,6 +166,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Observe wishlist actions
         viewModel.getWishlistActionSuccess().observe(this, success -> {
             if (success) {
+                isFavorite = !isFavorite;
+                updateFavoriteIcon();
                 Toast.makeText(this, isFavorite ? "Đã thêm vào yêu thích" : "Đã xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
             }
         });
@@ -199,10 +207,26 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void handleFavoriteClick() {
         String wishlistId = userUid + "_" + productId;
         if (isFavorite) {
-            viewModel.removeFromWishlist(wishlistId);
+            viewModel.removeFromWishlist(wishlistId).observe(this, success -> {
+                if (success) {
+                    isFavorite = false;
+                    updateFavoriteIcon();
+                    Toast.makeText(this, "Đã xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Xoá yêu thích thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             Wishlist wishlist = new Wishlist(wishlistId, userUid, productId);
-            viewModel.addToWishlist(wishlist);
+            viewModel.addToWishlist(wishlist).observe(this, success -> {
+                if (success != null && success) {
+                    isFavorite = true;
+                    updateFavoriteIcon();
+                    Toast.makeText(this, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Thêm yêu thích thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

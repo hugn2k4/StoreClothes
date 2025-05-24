@@ -94,36 +94,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 .observe((LifecycleOwner) context, isFavorite -> {
                     if (isFavorite != null) {
                         updateFavoriteButton(holder, isFavorite);
-                        setupFavoriteClickListener(holder, product, isFavorite);
+//                        setupFavoriteClickListener(holder, product, isFavorite);
                     }
                 });
-
-        // Xử lý click nút yêu thích
         holder.btnFavorite.setOnClickListener(v -> {
             boolean currentFavorite = holder.btnFavorite.getTag() != null && (boolean) holder.btnFavorite.getTag();
             String wishlistId = userUid + "_" + product.getProductId();
             Wishlist wishlist = new Wishlist(wishlistId, userUid, product.getProductId());
 
             if (currentFavorite) {
-                productViewModel.removeFromWishlist(wishlistId);
-            } else {
-                productViewModel.addToWishlist(wishlist);
-            }
-        });
-    }
-
-    private void updateFavoriteButton(ProductViewHolder holder, boolean isFavorite) {
-        holder.btnFavorite.setImageResource(
-                isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
-        );
-        holder.btnFavorite.setTag(isFavorite);
-    }
-    private void setupFavoriteClickListener(ProductViewHolder holder, Product product, boolean isFavorite) {
-        holder.btnFavorite.setOnClickListener(v -> {
-            String wishlistId = userUid + "_" + product.getProductId();
-            Wishlist wishlist = new Wishlist(wishlistId, userUid, product.getProductId());
-
-            if (isFavorite) {
                 productViewModel.removeFromWishlist(wishlistId)
                         .observe((LifecycleOwner) context, success -> {
                             if (success) {
@@ -139,6 +118,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                         });
             }
         });
+    }
+
+    private void updateFavoriteButton(ProductViewHolder holder, boolean isFavorite) {
+        holder.btnFavorite.setImageResource(
+                isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
+        );
+        holder.btnFavorite.setTag(isFavorite);
     }
 
     @Override
