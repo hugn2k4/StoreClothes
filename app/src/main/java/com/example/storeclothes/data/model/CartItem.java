@@ -44,8 +44,7 @@ public class CartItem {
         }
     }
 
-    // Getters (bắt buộc nếu dùng Firestore)
-    public CartItem() {} // Constructor rỗng để Firestore deserialize
+    public CartItem() {}
 
     public String getProductId() { return productId; }
     public int getQuantity() { return quantity; }

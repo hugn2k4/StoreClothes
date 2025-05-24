@@ -100,7 +100,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.btnFavorite.setOnClickListener(v -> {
             boolean currentFavorite = holder.btnFavorite.getTag() != null && (boolean) holder.btnFavorite.getTag();
             String wishlistId = userUid + "_" + product.getProductId();
-            Wishlist wishlist = new Wishlist(wishlistId, userUid, product.getProductId());
+            Wishlist wishlist = new Wishlist.Builder()
+                    .setWishlistId(wishlistId)
+                    .setUserId(userUid)
+                    .setProductId(product.getProductId())
+                    .build();
 
             if (currentFavorite) {
                 productViewModel.removeFromWishlist(wishlistId)

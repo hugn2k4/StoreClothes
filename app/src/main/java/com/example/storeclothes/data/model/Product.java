@@ -12,16 +12,15 @@ public class Product {
 
     public Product() { }
 
-    public Product(String productId, String name, String description, Double price, String categoryId, List<String> images) {
-        this.productId = productId;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.categoryId = categoryId;
-        this.images = images;
+    private Product(Builder builder) {
+        this.productId = builder.productId;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.price = builder.price;
+        this.categoryId = builder.categoryId;
+        this.images = builder.images;
     }
 
-    // getter và setter các trường
     public String getProductId() { return productId; }
     public void setProductId(String productId) { this.productId = productId; }
 
@@ -39,4 +38,50 @@ public class Product {
 
     public List<String> getImages() { return images; }
     public void setImages(List<String> images) { this.images = images; }
+
+    // Builder class
+    public static class Builder {
+        private String productId;
+        private String name;
+        private String description;
+        private Double price;
+        private String categoryId;
+        private List<String> images;
+
+        public Builder() {}
+
+        public Builder setProductId(String productId) {
+            this.productId = productId;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setPrice(Double price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setImages(List<String> images) {
+            this.images = images;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this);
+        }
+    }
 }

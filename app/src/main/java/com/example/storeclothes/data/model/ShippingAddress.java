@@ -9,7 +9,6 @@ public class ShippingAddress {
     private String city;
     private String postalCode;
 
-    // Constructor
     public ShippingAddress(String addressId, String orderId, String fullName, String phone, String addressLine, String city, String postalCode) {
         this.addressId = addressId;
         this.orderId = orderId;
@@ -20,7 +19,6 @@ public class ShippingAddress {
         this.postalCode = postalCode;
     }
 
-    // Getter and Setter methods
     public String getAddressId() {
         return addressId;
     }

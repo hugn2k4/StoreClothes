@@ -217,7 +217,11 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Wishlist wishlist = new Wishlist(wishlistId, userUid, productId);
+            Wishlist wishlist = new Wishlist.Builder()
+                    .setWishlistId(wishlistId)
+                    .setUserId(userUid)
+                    .setProductId(productId)
+                    .build();
             viewModel.addToWishlist(wishlist).observe(this, success -> {
                 if (success != null && success) {
                     isFavorite = true;

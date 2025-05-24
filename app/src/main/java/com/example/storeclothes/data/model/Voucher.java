@@ -8,7 +8,6 @@ public class Voucher {
     private Double discountAmount;
     private Date expiryDate;
 
-    // Constructor
     public Voucher(String voucherId, String code, Double discountAmount, Date expiryDate) {
         this.voucherId = voucherId;
         this.code = code;
@@ -16,7 +15,6 @@ public class Voucher {
         this.expiryDate = expiryDate;
     }
 
-    // Getter and Setter methods
     public String getVoucherId() {
         return voucherId;
     }

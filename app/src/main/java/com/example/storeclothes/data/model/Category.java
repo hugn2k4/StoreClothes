@@ -5,37 +5,49 @@ public class Category {
     private String name;
     private String imageUrl;
 
-    // Constructor
-    public Category(String categoryId, String name, String imageUrl) {
-        this.categoryId = categoryId;
-        this.name = name;
-        this.imageUrl = imageUrl;
+    // Constructor private để bắt buộc tạo đối tượng qua Builder
+    private Category(Builder builder) {
+        this.categoryId = builder.categoryId;
+        this.name = builder.name;
+        this.imageUrl = builder.imageUrl;
     }
-    public Category() {
-    }
+    public Category() {}
 
-    // Getter and Setter methods
     public String getCategoryId() {
         return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    // Builder class
+    public static class Builder {
+        private String categoryId;
+        private String name;
+        private String imageUrl;
+
+        public Builder setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+            return this;
+        }
+
+        public Category build() {
+            return new Category(this);
+        }
     }
 }
