@@ -10,6 +10,10 @@ public class Review {
     private String comment;
     private Date date;
 
+    // Bổ sung cho hiển thị trong giao diện:
+    private String userName;
+    private String avatarUrl;
+
     public Review() {}
 
     private Review(Builder builder) {
@@ -19,6 +23,8 @@ public class Review {
         this.rating = builder.rating;
         this.comment = builder.comment;
         this.date = builder.date;
+        this.userName = builder.userName;
+        this.avatarUrl = builder.avatarUrl;
     }
 
     public String getReviewId() { return reviewId; }
@@ -39,6 +45,12 @@ public class Review {
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
 
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
+
+    public String getAvatarUrl() { return avatarUrl; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+
     // Builder class
     public static class Builder {
         private String reviewId;
@@ -47,6 +59,8 @@ public class Review {
         private double rating;
         private String comment;
         private Date date;
+        private String userName;
+        private String avatarUrl;
 
         public Builder() {}
 
@@ -77,6 +91,16 @@ public class Review {
 
         public Builder setDate(Date date) {
             this.date = date;
+            return this;
+        }
+
+        public Builder setUserName(String userName) {
+            this.userName = userName;
+            return this;
+        }
+
+        public Builder setAvatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
             return this;
         }
 
