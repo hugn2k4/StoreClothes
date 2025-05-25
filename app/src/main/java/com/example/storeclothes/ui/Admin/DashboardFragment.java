@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Admin;
+package com.example.storeclothes.ui.Admin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -49,7 +49,7 @@
             android:name=".ui.Fragment.Cart.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.Fragment.Admin.ManagerHomeActivity"
+            android:name=".ui.Admin.ManagerHomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.Fragment.Authentication.LoginActivity"

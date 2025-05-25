@@ -82,18 +82,28 @@
                 android:padding="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Product Management"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/black" />
+                
+                <Button
+                    android:id="@+id/btnUndo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Undo"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
 
             </LinearLayout>
 
             <!-- RecyclerView for Products -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvProducts"
+                android:id="@+id/recyclerViewProducts"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />

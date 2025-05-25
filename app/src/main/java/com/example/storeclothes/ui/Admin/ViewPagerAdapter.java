@@ -1,4 +1,4 @@
-package com.example.storeclothes.ui.Fragment.Admin;
+package com.example.storeclothes.ui.Admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

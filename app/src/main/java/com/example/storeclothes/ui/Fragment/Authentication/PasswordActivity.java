@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.storeclothes.R;
-import com.example.storeclothes.ui.Fragment.Admin.ManagerHomeActivity;
+import com.example.storeclothes.ui.Admin.ManagerHomeActivity;
 import com.example.storeclothes.ui.Fragment.Home.HomeActivity;
 import com.example.storeclothes.ui.ViewModel.AuthViewModel;
 import com.google.android.material.button.MaterialButton;

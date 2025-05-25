@@ -1,15 +1,11 @@
-package com.example.storeclothes.ui.Fragment.Admin;
+package com.example.storeclothes.ui.Admin;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.storeclothes.R;
-import com.example.storeclothes.ui.Fragment.Admin.DashboardFragment;
-import com.example.storeclothes.ui.Fragment.Admin.UsersFragment;
-import com.example.storeclothes.ui.Fragment.Admin.ProductsFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
