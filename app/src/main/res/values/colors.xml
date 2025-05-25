@@ -18,4 +18,10 @@
     <color name="green_custom">#E82BB02B</color>
     <color name="yellow_custom">#DCFAE84F</color>
     <color name="white_custom">#FFFFFFFF</color>
+    <color name="blue_600">#FF1976D2</color>
+    <color name="green_600">#FF388E3C</color>
+    <color name="red_600">#FFD32F2F</color>
+    <color name="gray_50">#FFFAFAFA</color>
+    <color name="gray_500">#FF9E9E9E</color>
+    <color name="gray_600">#FF757575</color>
 </resources>

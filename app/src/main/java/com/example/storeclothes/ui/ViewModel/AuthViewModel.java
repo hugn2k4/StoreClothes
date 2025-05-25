@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.storeclothes.data.local.LocalStorageManager;
 import com.example.storeclothes.data.repository.AuthRepository;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * ViewModel cho các màn hình xác thực (Authentication)
@@ -117,6 +118,23 @@ public class AuthViewModel extends AndroidViewModel {
                         errorMessage.setValue(result.getErrorMessage());
                     }
                 });
+    }
+    public void checkUserRole(String userId, RoleCheckListener listener) {
+        FirebaseFirestore.getInstance().collection("users")
+                .document(userId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String role = task.getResult().getString("role");
+                        listener.onRoleChecked(role != null ? role : "CUSTOMER");
+                    } else {
+                        listener.onRoleChecked("CUSTOMER");
+                    }
+                });
+    }
+
+    public interface RoleCheckListener {
+        void onRoleChecked(String role);
     }
     public void checkEmailExists(String email, EmailCheckListener listener) {
         if (email.isEmpty()) {
