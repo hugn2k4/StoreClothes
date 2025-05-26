@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Fragment.Product.ProductDetailActivity">
+    tools:context=".ui.Customer.Product.ProductDetailActivity">
 
     <!-- NestedScrollView chứa nội dung chính -->
     <androidx.core.widget.NestedScrollView
