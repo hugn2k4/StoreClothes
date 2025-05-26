@@ -49,6 +49,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyDataSetChanged();
     }
 
+    public void removeUserById(String userId) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUserId().equals(userId)) {
+                users.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
+        }
+    }
+
     class UserViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvUserName;
         private final TextView tvUserEmail;

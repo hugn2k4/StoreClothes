@@ -72,15 +72,17 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/black" />
-                
+
                 <Button
                     android:id="@+id/btnUndo"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
                     android:text="Undo"
                     android:textSize="14sp"
-                    android:visibility="gone"
-                    style="@style/Widget.MaterialComponents.Button.TextButton" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -90,15 +92,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabAddUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_add"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
 
         </LinearLayout>
 

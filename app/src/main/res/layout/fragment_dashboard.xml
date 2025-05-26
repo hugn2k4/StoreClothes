@@ -247,32 +247,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Recent Users"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="12dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRecentUsers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+            app:cardElevation="2dp"/>
 
         <!-- Top Products Section -->
         <androidx.cardview.widget.CardView
@@ -296,11 +271,29 @@
                     android:textColor="@color/black"
                     android:layout_marginBottom="12dp" />
 
+                <!-- Thay đổi ID từ rvTopProducts thành recyclerViewTopProducts -->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvTopProducts"
+                    android:id="@+id/recyclerViewTopProducts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false" />
+
+                <!-- Thêm ProgressBar và TextView cho trạng thái loading và no data -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvNoData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Không có dữ liệu"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

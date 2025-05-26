@@ -40,45 +40,50 @@ public class UsersFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Khởi tạo các thành phần
-        recyclerView = view.findViewById(R.id.recyclerViewUsers);
+        recyclerView = view.findViewById(R.id.recyclerViewUsers); // Gán đúng view
         btnUndo = view.findViewById(R.id.btnUndo);
-        FloatingActionButton fabAddUser = view.findViewById(R.id.fabAddUser);
 
-        // Sử dụng Factory Pattern để tạo UserManager
         userManager = ManagerFactory.createManager(ManagerFactory.ManagerType.USER);
         commandInvoker = CommandInvoker.getInstance();
 
-        // Thiết lập RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         UserAdapter adapter = new UserAdapter(new ArrayList<>(), this::onDeleteUser);
         recyclerView.setAdapter(adapter);
 
-        // Load dữ liệu người dùng
         loadUsers();
 
-        // Thiết lập sự kiện
         btnUndo.setOnClickListener(v -> undoLastCommand());
-        fabAddUser.setOnClickListener(v -> {
-            // Mở màn hình thêm người dùng
-        });
     }
+
 
     private void loadUsers() {
         userManager.getAll().observe(getViewLifecycleOwner(), users -> {
-            // Cập nhật adapter với danh sách người dùng
-            ((UserAdapter) recyclerView.getAdapter()).updateList(users);
+            // Lọc ra những người dùng có role là CUSTOMER
+            List<User> customers = new ArrayList<>();
+            for (User user : users) {
+                if ("CUSTOMER".equalsIgnoreCase(user.getRole())) {
+                    customers.add(user);
+                }
+            }
+            // Cập nhật adapter với danh sách người dùng là CUSTOMER
+            ((UserAdapter) recyclerView.getAdapter()).updateList(customers);
             updateUndoButtonState();
         });
     }
 
     private void onDeleteUser(String userId) {
-        // Sử dụng Command Pattern để xóa người dùng
+        // Xóa bằng Command Pattern
         DeleteUserCommand deleteCommand = new DeleteUserCommand(userId);
         commandInvoker.executeCommand(deleteCommand);
+
+        // Xóa trực tiếp khỏi adapter để UI cập nhật ngay
+        UserAdapter adapter = (UserAdapter) recyclerView.getAdapter();
+        adapter.removeUserById(userId); // Hàm custom để xóa người dùng theo id
+
         Toast.makeText(getContext(), "Đã xóa người dùng", Toast.LENGTH_SHORT).show();
         updateUndoButtonState();
     }
+
 
     private void undoLastCommand() {
         if (commandInvoker.canUndo()) {
@@ -90,6 +95,7 @@ public class UsersFragment extends Fragment {
     }
 
     private void updateUndoButtonState() {
+        btnUndo.setVisibility(commandInvoker.canUndo() ? View.VISIBLE : View.GONE);
         btnUndo.setEnabled(commandInvoker.canUndo());
     }
 }

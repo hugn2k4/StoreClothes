@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
+            android:contentDescription="Thêm sản phẩm mới"
             app:backgroundTint="@color/blue_600" />
 
     </LinearLayout>
@@ -74,38 +75,43 @@
             android:orientation="vertical">
 
             <!-- Header -->
+
+            <!-- RecyclerView for Products -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@color/gray_50"
+                android:orientation="horizontal"
                 android:padding="16dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="208dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Product Management"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
-                
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/btnUndo"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
                     android:text="Undo"
                     android:textSize="14sp"
-                    android:visibility="gone"
-                    style="@style/Widget.MaterialComponents.Button.TextButton" />
+                    android:visibility="gone" />
+
 
             </LinearLayout>
 
-            <!-- RecyclerView for Products -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewProducts"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="442dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
