@@ -2,9 +2,10 @@ package com.example.storeclothes.data.firebase;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class FirebaseFirestoreSingleton {
+public class FirebaseFireStoreSingleton {
     private static FirebaseFirestore instance;
-    private FirebaseFirestoreSingleton() {}
+    private FirebaseFireStoreSingleton() {}
+
     public static FirebaseFirestore getInstance() {
         if (instance == null) {
             instance = FirebaseFirestore.getInstance();

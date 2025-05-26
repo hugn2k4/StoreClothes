@@ -129,6 +129,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
         );
         holder.btnFavorite.setTag(isFavorite);
+        holder.btnFavorite.animate()
+                .scaleX(1.2f)
+                .scaleY(1.2f)
+                .setDuration(100)
+                .withEndAction(() -> holder.btnFavorite.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(100)
+                        .start()
+                ).start();
     }
 
     @Override

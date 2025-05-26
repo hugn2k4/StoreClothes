@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.storeclothes.data.firebase.FirebaseAuthSingleton;
-import com.example.storeclothes.data.firebase.FirebaseFirestoreSingleton;
+import com.example.storeclothes.data.firebase.FirebaseFireStoreSingleton;
 import com.example.storeclothes.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +27,7 @@ public class AuthRepository {
     
     private AuthRepository() {
         this.firebaseAuth = FirebaseAuthSingleton.getInstance();
-        this.firestore = FirebaseFirestoreSingleton.getInstance();
+        this.firestore = FirebaseFireStoreSingleton.getInstance();
     }
     
     public static AuthRepository getInstance() {
@@ -47,19 +47,15 @@ public class AuthRepository {
                         if (firebaseUser != null) {
                             String userId = firebaseUser.getUid();
                             // Tạo đối tượng User
-                            User user = new User(
-                                    userId,
-                                    firstName,
-                                    lastName,
-                                    email,
-                                    password,
-                                    new Date(),
-                                    false,
-                                    "CUSTOMER",
-                                    address,
-                                    phone,
-                                    null
-                            );
+                            User user = new User.Builder()
+                                    .setUserId(userId)
+                                    .setFirstName(firstName)
+                                    .setLastName(lastName)
+                                    .setEmail(email)
+                                    .setPassword(password)
+                                    .setAddress(address)
+                                    .setPhone(phone)
+                                    .build();
                             
                             // Lưu thông tin người dùng vào Firestore
                             saveUserToFirestore(user, resultLiveData);

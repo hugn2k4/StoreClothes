@@ -96,12 +96,10 @@ public class WishlistActivity extends AppCompatActivity {
             }
         });
     }
-
     private void setupClickListeners() {
         buttonBack.setOnClickListener(view -> finish());
         tvRemoveAll.setOnClickListener(view -> viewModel.removeAllWishlistItems(userUid));
     }
-
     @Override
     protected void onResume() {
         super.onResume();

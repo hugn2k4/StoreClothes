@@ -5,8 +5,8 @@ public class Wishlist {
     private String userId;
     private String productId;
 
-    public Wishlist() {
-    }
+    public Wishlist() {}
+
     private Wishlist(Builder builder) {
         this.wishlistId = builder.wishlistId;
         this.userId = builder.userId;
@@ -15,17 +15,20 @@ public class Wishlist {
     public String getWishlistId() {
         return wishlistId;
     }
-
     public String getUserId() {
         return userId;
+    }
+    public String getProductId() {
+        return productId;
+    }
+
+    // Setter (cho Firebase hoặc sửa dữ liệu)
+    public void setWishlistId(String wishlistId) {
+        this.wishlistId = wishlistId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getProductId() {
-        return productId;
     }
 
     public void setProductId(String productId) {
@@ -38,22 +41,18 @@ public class Wishlist {
         private String productId;
 
         public Builder() {}
-
         public Builder setWishlistId(String wishlistId) {
             this.wishlistId = wishlistId;
             return this;
         }
-
         public Builder setUserId(String userId) {
             this.userId = userId;
             return this;
         }
-
         public Builder setProductId(String productId) {
             this.productId = productId;
             return this;
         }
-
         public Wishlist build() {
             return new Wishlist(this);
         }

@@ -168,12 +168,13 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
                         return;
                     }
 
-                    Review review = new Review();
-                    review.setProductId(orderItem.getCartItem().getProductId());
-                    review.setUserId(order.getUserId());
-                    review.setRating(rating);
-                    review.setComment(reviewText);
-                    review.setDate(new Date());
+                    Review review = new Review.Builder()
+                            .setProductId(orderItem.getCartItem().getProductId())
+                            .setUserId(order.getUserId())
+                            .setRating(rating)
+                            .setComment(reviewText)
+                            .setDate(new Date())
+                            .build();
 
                     btnSubmitReview.setEnabled(false);
 

@@ -6,12 +6,25 @@ public class CartItem {
     private String size;
     private String color;
 
+    // Constructor private để ép dùng Builder
     private CartItem(Builder builder) {
         this.productId = builder.productId;
         this.quantity = builder.quantity;
         this.size = builder.size;
         this.color = builder.color;
     }
+
+    // Dành riêng cho Firebase
+    public CartItem() {}
+
+    public String getProductId() { return productId; }
+    public int getQuantity() { return quantity; }
+    public String getSize() { return size; }
+    public String getColor() { return color; }
+
+    /** @deprecated Only for Firebase deserialization */
+    @Deprecated
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
     public static class Builder {
         private String productId;
@@ -43,12 +56,4 @@ public class CartItem {
             return new CartItem(this);
         }
     }
-
-    public CartItem() {}
-
-    public String getProductId() { return productId; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public String getSize() { return size; }
-    public String getColor() { return color; }
 }

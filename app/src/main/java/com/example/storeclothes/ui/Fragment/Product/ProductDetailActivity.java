@@ -1,11 +1,11 @@
 package com.example.storeclothes.ui.Fragment.Product;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -23,14 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.storeclothes.R;
 import com.example.storeclothes.data.model.CartItem;
 import com.example.storeclothes.data.model.ColorItem;
-import com.example.storeclothes.data.model.Product;
 import com.example.storeclothes.data.model.Review;
 import com.example.storeclothes.data.model.Wishlist;
 import com.example.storeclothes.ui.Adapter.ColorAdapter;
 import com.example.storeclothes.ui.Adapter.ImageAdapter;
-import com.example.storeclothes.ui.Adapter.ProductAdapter;
 import com.example.storeclothes.ui.Adapter.SizeAdapter;
-import com.example.storeclothes.ui.Fragment.Product.ReviewAdapter;
+import com.example.storeclothes.ui.Adapter.ReviewAdapter;
+import com.example.storeclothes.ui.Fragment.Wishlist.WishlistManager;
+import com.example.storeclothes.ui.Fragment.Wishlist.WishlistObserver;
 import com.example.storeclothes.ui.ViewModel.ProductViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -38,14 +38,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends AppCompatActivity implements WishlistObserver{
 
     private ProductViewModel viewModel;
-    private String productId, userUid, categoryId;
+    private String productId, userUid;
     private boolean isFavorite = false;
-    private TextView tvName, tvPrice, tvDescription, tvSize, tvQuantity,txtRating, txtNumberReview;
+    private TextView tvName, tvPrice,tvPriceProduct, tvDescription, tvSize, tvQuantity,txtRating, txtNumberReview;
     private RecyclerView rvImages, recyclerViewReview;
     private MaterialCardView cardAddToCart, cardColor, cardSize;
     private View colorIndicator;
@@ -54,7 +53,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private int quantity = 1;
     private String selectedColor = "White";
     private String selectedSize = "L";
-    private List<Review> reviewList;
+    private WishlistManager wishlistManager;
 
     private final List<ColorItem> colorList = Arrays.asList(
             new ColorItem("White", R.color.white_custom),
@@ -70,20 +69,26 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
-        // Get Intent data
         productId = getIntent().getStringExtra("product_id");
         userUid = getIntent().getStringExtra("user_id");
         // userUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Uncomment for Firebase Auth
         if (productId == null || userUid == null) {
-            Toast.makeText(this, "Thông tin không hợp lệ", Toast.LENGTH_SHORT).show();
+            showToast("Thông tin không hợp lệ");
             finish();
             return;
         }
 
-        // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        // Observe
+        wishlistManager = new WishlistManager();
+        wishlistManager.registerObserver(this);
+//        wishlistManager.registerObserver(new WishlistObserver() {
+//            @Override
+//            public void onWishlistStatusChanged(boolean isFavorite) {
+//                Log.e("WishlistObserver", "onWishlistStatusChanged: " + isFavorite);
+//            }
+//        });
 
-        // Initialize UI and load data
         initializeViews();
         setupObservers();
         setupClickListeners();
@@ -91,14 +96,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         viewModel.checkWishlistStatus(userUid, productId)
                 .observe(this, isFavorite -> {
                     if (isFavorite != null) {
-                        this.isFavorite = isFavorite;
-                        updateFavoriteIcon();
+                        wishlistManager.setFavorite(isFavorite);
                     }
                 });
         loadProductReviews();
     }
-
-
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
     private void loadProductReviews() {
         viewModel.getReviewList().observe(this, reviews -> {
             recyclerViewReview.setAdapter(new ReviewAdapter(this, reviews));
@@ -112,12 +117,12 @@ public class ProductDetailActivity extends AppCompatActivity {
             txtNumberReview.setText(String.format("%d Reviews", totalReviews));
         });
     }
-
     private void initializeViews() {
         fabFavorite = findViewById(R.id.fabFavorite);
         fabBack = findViewById(R.id.fabBack);
         tvName = findViewById(R.id.tvNameProduct);
-        tvPrice = findViewById(R.id.tvPriceProduct);
+        tvPrice = findViewById(R.id.tvPrice);
+        tvPriceProduct = findViewById(R.id.tvPriceProduct);
         tvDescription = findViewById(R.id.tvDescription);
         tvSize = findViewById(R.id.tvSelectedSize);
         tvQuantity = findViewById(R.id.tvQuantity);
@@ -140,16 +145,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvQuantity.setText(String.valueOf(quantity));
         updateColorIndicator();
     }
-
     private void setupObservers() {
         // Observe product details
         viewModel.getProduct().observe(this, product -> {
             if (product != null) {
                 tvName.setText(product.getName());
                 tvPrice.setText(String.format("$%.2f", product.getPrice()));
+                tvPriceProduct.setText(String.format("$%.2f", product.getPrice()));
                 tvDescription.setText(product.getDescription());
                 rvImages.setAdapter(new ImageAdapter(this, product.getImages()));
-                categoryId = product.getCategoryId();
                 viewModel.loadReviews(productId);
             }
         });
@@ -157,7 +161,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Observe product errors
         viewModel.getProductError().observe(this, error -> {
             if (error != null) {
-                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                showToast(error);
             }
         });
 
@@ -174,28 +178,27 @@ public class ProductDetailActivity extends AppCompatActivity {
             if (success) {
                 isFavorite = !isFavorite;
                 updateFavoriteIcon();
-                Toast.makeText(this, isFavorite ? "Đã thêm vào yêu thích" : "Đã xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
+                showToast(isFavorite ? "Đã thêm vào yêu thích" : "Đã xoá khỏi yêu thích");
             }
         });
         viewModel.getWishlistActionError().observe(this, error -> {
             if (error != null) {
-                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                showToast(error);
             }
         });
 
         // Observe cart actions
         viewModel.getAddToCartSuccess().observe(this, success -> {
             if (success) {
-                Toast.makeText(this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                showToast("Đã thêm vào giỏ hàng!");
             }
         });
         viewModel.getAddToCartError().observe(this, error -> {
             if (error != null) {
-                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                showToast(error);
             }
         });
     }
-
     private void setupClickListeners() {
         fabBack.setOnClickListener(v -> finish());
         fabFavorite.setOnClickListener(v -> handleFavoriteClick());
@@ -205,21 +208,30 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnIncrease.setOnClickListener(v -> updateQuantity(true));
         btnDecrease.setOnClickListener(v -> updateQuantity(false));
     }
-
     private void updateFavoriteIcon() {
         fabFavorite.setImageResource(isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border);
+        fabFavorite.animate()
+                .scaleX(1.2f)
+                .scaleY(1.2f)
+                .setDuration(100)
+                .withEndAction(() -> fabFavorite.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(100)
+                        .start()
+                ).start();
     }
-
     private void handleFavoriteClick() {
         String wishlistId = userUid + "_" + productId;
         if (isFavorite) {
             viewModel.removeFromWishlist(wishlistId).observe(this, success -> {
                 if (success) {
-                    isFavorite = false;
-                    updateFavoriteIcon();
-                    Toast.makeText(this, "Đã xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
+//                    isFavorite = false;
+//                    updateFavoriteIcon();
+                    wishlistManager.setFavorite(false);
+                    showToast("Đã xoá khỏi yêu thích");
                 } else {
-                    Toast.makeText(this, "Xoá yêu thích thất bại", Toast.LENGTH_SHORT).show();
+                    showToast("Xoá yêu thích thất bại");
                 }
             });
         } else {
@@ -230,16 +242,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                     .build();
             viewModel.addToWishlist(wishlist).observe(this, success -> {
                 if (success != null && success) {
-                    isFavorite = true;
-                    updateFavoriteIcon();
-                    Toast.makeText(this, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+//                    isFavorite = true;
+//                    updateFavoriteIcon();
+                    wishlistManager.setFavorite(true);
+                    showToast("Đã thêm vào yêu thích");
                 } else {
-                    Toast.makeText(this, "Thêm yêu thích thất bại", Toast.LENGTH_SHORT).show();
+                    showToast("Thêm yêu thích thất bại");
                 }
             });
         }
     }
-
     private void handleAddToCart() {
         CartItem item = new CartItem.Builder()
                 .setProductId(productId)
@@ -249,7 +261,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .build();
         viewModel.addToCart(userUid, item);
     }
-
     private void updateQuantity(boolean increase) {
         if (increase && quantity < 10) {
             quantity++;
@@ -257,8 +268,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             quantity--;
         }
         tvQuantity.setText(String.valueOf(quantity));
+        btnIncrease.setEnabled(quantity < 10);
+        btnDecrease.setEnabled(quantity > 1);
     }
-
     private void updateColorIndicator() {
         for (ColorItem item : colorList) {
             if (item.getName().equals(selectedColor)) {
@@ -269,7 +281,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         }
     }
-
     private void showColorDialog() {
         Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.dialog_select_color);
@@ -286,15 +297,21 @@ public class ProductDetailActivity extends AppCompatActivity {
         ImageView btnClose = dialog.findViewById(R.id.btnClose);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ColorAdapter(this, colorList, selectedColor, colorName -> {
-            selectedColor = colorName;
-            updateColorIndicator();
+            updateSelectedColor(colorName);
+            quantity = 1;
+            tvQuantity.setText(String.valueOf(quantity));
+            btnIncrease.setEnabled(true);
+            btnDecrease.setEnabled(false);
             dialog.dismiss();
         }));
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
-
+    private void updateSelectedColor(String colorName) {
+        selectedColor = colorName;
+        updateColorIndicator();
+    }
     private void showSizeDialog() {
         Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.dialog_select_size);
@@ -318,5 +335,18 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
+    }
+
+
+    @Override
+    public void onWishlistStatusChanged(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+        updateFavoriteIcon();
+        // Có thể show Toast hoặc cập nhật UI khác nếu cần
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        wishlistManager.removeObserver(this);
     }
 }
