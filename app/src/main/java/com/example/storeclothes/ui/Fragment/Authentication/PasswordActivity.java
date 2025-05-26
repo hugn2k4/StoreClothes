@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.storeclothes.R;
+import com.example.storeclothes.ui.Admin.ManagerHomeActivity;
 import com.example.storeclothes.ui.Fragment.Home.HomeActivity;
 import com.example.storeclothes.ui.ViewModel.AuthViewModel;
 import com.google.android.material.button.MaterialButton;
@@ -68,12 +69,25 @@ public class PasswordActivity extends AppCompatActivity {
     private void observeViewModel() {
         authViewModel.getLoginSuccess().observe(this, success -> {
             if (success) {
-                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, HomeActivity.class));
-                finish();
+                // Kiểm tra role của người dùng
+                authViewModel.getCurrentUser().observe(this, user -> {
+                    if (user != null) {
+                        authViewModel.checkUserRole(user.getUid(), role -> {
+                            if (role != null && role.equals("MANAGER")) {
+                                Toast.makeText(this, "Đăng nhập thành công với quyền quản lý!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(this, ManagerHomeActivity.class));
+                            } else {
+                                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(this, HomeActivity.class));
+                            }
+                            finish();
+                        });
+                    }
+                });
             }
         });
 
+        // Giữ nguyên các observer khác
         authViewModel.getErrorMessage().observe(this, error -> {
             if (error != null && !error.isEmpty()) {
                 Toast.makeText(this, error, Toast.LENGTH_LONG).show();
@@ -81,7 +95,7 @@ public class PasswordActivity extends AppCompatActivity {
         });
 
         authViewModel.getIsLoading().observe(this, isLoading -> {
-            // TODO: Hiển thị tiến trình loading nếu muốn
+            // Xử lý loading indicator nếu cần
         });
     }
 }
