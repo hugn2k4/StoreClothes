@@ -70,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView tvProductName, tvProductCategory, tvProductPrice, tvProductStock, tvProductSales;
+        private final TextView tvProductName, tvProductCategory, tvProductPrice;
         private final ImageView imgProduct;
         private final ImageButton btnEditProduct, btnDeleteProduct;
 
@@ -79,8 +79,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvProductCategory = itemView.findViewById(R.id.tvProductCategory);
             tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
-            tvProductStock = itemView.findViewById(R.id.tvProductStock);
-            tvProductSales = itemView.findViewById(R.id.tvProductSales);
             imgProduct = itemView.findViewById(R.id.imgProduct); // Bạn cần thêm ImageView vào layout nếu muốn hiển thị ảnh
             btnEditProduct = itemView.findViewById(R.id.btnEditProduct);
             btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct);
@@ -90,8 +88,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductName.setText(product.getName());
             tvProductCategory.setText(product.getCategoryId() != null ? product.getCategoryId() : "Unknown");
             tvProductPrice.setText(String.format("$%.2f", product.getPrice() != null ? product.getPrice() : 0.0));
-            tvProductStock.setText("0"); // Vì model Product hiện không có trường stock
-            tvProductSales.setText("0"); // Vì model Product hiện không có trường sold/sales
 
             // Load ảnh sản phẩm nếu có
             if (product.getImages() != null && !product.getImages().isEmpty()

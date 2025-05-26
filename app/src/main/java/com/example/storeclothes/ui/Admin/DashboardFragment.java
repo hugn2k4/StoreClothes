@@ -37,9 +37,6 @@ public class DashboardFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView tvNoData;
     private TextView tvTotalUsers;
-    private TextView tvActiveUsers;
-    private TextView tvBestSeller;
-    private TextView tvBestSellerSales;
     private TextView tvTotalRevenue;
     private FirebaseFirestore firestore;
 
@@ -57,9 +54,6 @@ public class DashboardFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         tvNoData = view.findViewById(R.id.tvNoData);
         tvTotalUsers = view.findViewById(R.id.tvTotalUsers);
-        tvActiveUsers = view.findViewById(R.id.tvActiveUsers);
-        tvBestSeller = view.findViewById(R.id.tvBestSeller);
-        tvBestSellerSales = view.findViewById(R.id.tvBestSellerSales);
         tvTotalRevenue = view.findViewById(R.id.tvTotalRevenue);
 
         // Khởi tạo Firestore
@@ -74,58 +68,26 @@ public class DashboardFragment extends Fragment {
 
     private void loadDashboardData() {
         loadTotalUsers();
-        loadActiveUsers();
         loadTopProducts();
         loadTotalRevenue();
     }
 
     private void loadTotalUsers() {
         firestore.collection("users")
+                .whereEqualTo("role", "CUSTOMER")  // Lọc theo role = CUSTOMER
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int totalUsers = queryDocumentSnapshots.size();
-                    tvTotalUsers.setText(String.valueOf(totalUsers));
+                    if (tvTotalUsers != null) {
+                        tvTotalUsers.setText(String.valueOf(totalUsers));
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    tvTotalUsers.setText("0");
+                    if (tvTotalUsers != null) {
+                        tvTotalUsers.setText("0");
+                    }
                 });
     }
-
-    private void loadActiveUsers() {
-        // Giả sử active users là những user đã đăng nhập trong 30 ngày qua
-        long thirtyDaysAgo = System.currentTimeMillis() - (30L * 24 * 60 * 60 * 1000);
-
-        firestore.collection("users")
-                .whereGreaterThan("lastLoginTime", new Date(thirtyDaysAgo))
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    int activeUsers = queryDocumentSnapshots.size();
-                    tvActiveUsers.setText(String.valueOf(activeUsers));
-                })
-                .addOnFailureListener(e -> {
-                    // Nếu không có trường lastLoginTime, tính active users bằng cách khác
-                    // Ví dụ: users có đơn hàng trong 30 ngày qua
-                    firestore.collection("orders")
-                            .whereGreaterThan("orderDate", new Date(thirtyDaysAgo))
-                            .get()
-                            .addOnSuccessListener(orderSnapshots -> {
-                                List<String> activeUserIds = new ArrayList<>();
-                                for (QueryDocumentSnapshot doc : orderSnapshots) {
-                                    Order order = doc.toObject(Order.class);
-                                    if (order != null && order.getUserId() != null) {
-                                        if (!activeUserIds.contains(order.getUserId())) {
-                                            activeUserIds.add(order.getUserId());
-                                        }
-                                    }
-                                }
-                                tvActiveUsers.setText(String.valueOf(activeUserIds.size()));
-                            })
-                            .addOnFailureListener(ex -> {
-                                tvActiveUsers.setText("0");
-                            });
-                });
-    }
-
     private void loadTotalRevenue() {
         firestore.collection("orders")
                 .get()
@@ -180,38 +142,12 @@ public class DashboardFragment extends Fragment {
                     List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(productQuantityMap.entrySet());
                     Collections.sort(sortedEntries, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
-                    // Cập nhật Best Seller
-                    if (!sortedEntries.isEmpty()) {
-                        String bestSellerId = sortedEntries.get(0).getKey();
-                        int bestSellerQuantity = sortedEntries.get(0).getValue();
-
-                        // Lấy thông tin chi tiết của best seller
-                        firestore.collection("products")
-                                .whereEqualTo("productId", bestSellerId)
-                                .get()
-                                .addOnSuccessListener(productSnapshots -> {
-                                    if (!productSnapshots.isEmpty()) {
-                                        Product bestProduct = productSnapshots.getDocuments().get(0).toObject(Product.class);
-                                        if (bestProduct != null) {
-                                            tvBestSeller.setText(bestProduct.getName());
-                                            tvBestSellerSales.setText(bestSellerQuantity + " sales");
-                                        }
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                    tvBestSeller.setText("N/A");
-                                    tvBestSellerSales.setText("0 sales");
-                                });
-                    } else {
-                        tvBestSeller.setText("N/A");
-                        tvBestSellerSales.setText("0 sales");
-                    }
 
                     // Lấy tối đa 10 sản phẩm bán chạy nhất
                     List<String> topProductIds = new ArrayList<>();
                     int count = 0;
                     for (Map.Entry<String, Integer> entry : sortedEntries) {
-                        if (count < 10) {
+                        if (count < 3) {
                             topProductIds.add(entry.getKey());
                             count++;
                         } else {
@@ -267,8 +203,6 @@ public class DashboardFragment extends Fragment {
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
                     tvNoData.setVisibility(View.VISIBLE);
-                    tvBestSeller.setText("N/A");
-                    tvBestSellerSales.setText("0 sales");
                 });
     }
 }

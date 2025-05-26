@@ -38,6 +38,25 @@ public class UserDataLoadStrategy implements DataLoadStrategy<User> {
                 
         return usersLiveData;
     }
+    @Override
+    public LiveData<User> loadById(String id) {
+        MutableLiveData<User> userLiveData = new MutableLiveData<>();
+
+        firestore.collection("users")
+                .document(id)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        User user = documentSnapshot.toObject(User.class);
+                        userLiveData.setValue(user);
+                    } else {
+                        userLiveData.setValue(null);
+                    }
+                })
+                .addOnFailureListener(e -> userLiveData.setValue(null));
+
+        return userLiveData;
+    }
 
     @Override
     public String getStrategyName() {

@@ -24,24 +24,8 @@ public class UserManager extends BaseManager<User> {
         return loadStrategy.loadData();
     }
 
-    @Override
     public LiveData<User> getById(String id) {
-        MutableLiveData<User> userLiveData = new MutableLiveData<>();
-        
-        firestore.collection("users")
-                .document(id)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        User user = documentSnapshot.toObject(User.class);
-                        userLiveData.setValue(user);
-                    } else {
-                        userLiveData.setValue(null);
-                    }
-                })
-                .addOnFailureListener(e -> userLiveData.setValue(null));
-                
-        return userLiveData;
+        return loadStrategy.loadById(id);
     }
 
     @Override

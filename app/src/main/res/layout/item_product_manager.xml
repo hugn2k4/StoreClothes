@@ -70,41 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stock: "
-                    android:textColor="@color/gray_600"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tvProductStock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="25"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text=" | Sales: "
-                    android:textColor="@color/gray_600"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tvProductSales"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="150"
-                    android:textColor="@color/blue_600"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:orientation="horizontal"/>
 
         </LinearLayout>
 
