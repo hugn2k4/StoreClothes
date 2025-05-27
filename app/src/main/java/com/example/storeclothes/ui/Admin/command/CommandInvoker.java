@@ -21,14 +21,14 @@ public class CommandInvoker {
     }
 
     public void executeCommand(Command command) {
-        command.execute();
+        command.delete();
         commandHistory.push(command);
     }
 
     public void undoLastCommand() {
         if (!commandHistory.isEmpty()) {
             Command lastCommand = commandHistory.pop();
-            lastCommand.undo();
+            lastCommand.restore();
         }
     }
 

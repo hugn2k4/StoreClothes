@@ -15,7 +15,7 @@ public class DeleteUserCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void delete() {
         // Lưu user trước khi xóa để có thể hoàn tác
         userManager.getById(userId).observeForever(user -> {
             if (user != null) {
@@ -26,7 +26,7 @@ public class DeleteUserCommand implements Command {
     }
 
     @Override
-    public void undo() {
+    public void restore() {
         if (deletedUser != null) {
             userManager.add(deletedUser);
         }
