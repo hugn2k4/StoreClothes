@@ -24,4 +24,5 @@
     <color name="gray_50">#FFFAFAFA</color>
     <color name="gray_500">#FF9E9E9E</color>
     <color name="gray_600">#FF757575</color>
+    <color name="dark_gray">#FF757575</color>
 </resources>

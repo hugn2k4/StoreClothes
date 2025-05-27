@@ -15,7 +15,7 @@ public class DeleteProductCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void delete() {
         // Lưu product trước khi xóa để có thể hoàn tác
         productManager.getById(productId).observeForever(product -> {
             if (product != null) {
@@ -26,7 +26,7 @@ public class DeleteProductCommand implements Command {
     }
 
     @Override
-    public void undo() {
+    public void restore() {
         if (deletedProduct != null) {
             productManager.add(deletedProduct);
         }

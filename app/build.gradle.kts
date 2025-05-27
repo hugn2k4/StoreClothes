@@ -41,14 +41,23 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.datastore.core.android)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // ... existing dependencies ...
+    
+    // Thêm Material Components với phiên bản cụ thể
+    implementation("com.google.android.material:material:1.11.0")
+    implementation ("com.google.android.material:material:1.12.0")
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database")
-    implementation ("com.google.firebase:firebase-firestore:24.3.0")
-    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-storage")
+    
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")

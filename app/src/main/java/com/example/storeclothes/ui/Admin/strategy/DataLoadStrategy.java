@@ -9,5 +9,7 @@ import java.util.List;
  */
 public interface DataLoadStrategy<T> {
     LiveData<List<T>> loadData();
+    LiveData<T> loadById(String id);
+
     String getStrategyName();
 }

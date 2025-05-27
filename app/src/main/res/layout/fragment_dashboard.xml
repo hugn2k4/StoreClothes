@@ -78,108 +78,8 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Active Users Card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Active Users"
-                                android:textSize="12sp"
-                                android:textColor="@color/gray_600" />
-
-                            <TextView
-                                android:id="@+id/tvActiveUsers"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textSize="24sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/green_600"
-                                android:layout_marginTop="4dp" />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_eye"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
             <!-- Best Seller Card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Best Seller"
-                        android:textSize="12sp"
-                        android:textColor="@color/gray_600" />
-
-                    <TextView
-                        android:id="@+id/tvBestSeller"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Product Name"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="4dp" />
-
-                    <TextView
-                        android:id="@+id/tvBestSellerSales"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0 sales"
-                        android:textSize="12sp"
-                        android:textColor="@color/gray_600"
-                        android:layout_marginTop="2dp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
             <!-- Total Revenue Card -->
             <androidx.cardview.widget.CardView
@@ -247,32 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Recent Users"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="12dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRecentUsers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+            app:cardElevation="2dp"/>
 
         <!-- Top Products Section -->
         <androidx.cardview.widget.CardView
@@ -296,11 +171,29 @@
                     android:textColor="@color/black"
                     android:layout_marginBottom="12dp" />
 
+                <!-- Thay đổi ID từ rvTopProducts thành recyclerViewTopProducts -->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvTopProducts"
+                    android:id="@+id/recyclerViewTopProducts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false" />
+
+                <!-- Thêm ProgressBar và TextView cho trạng thái loading và no data -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvNoData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Không có dữ liệu"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

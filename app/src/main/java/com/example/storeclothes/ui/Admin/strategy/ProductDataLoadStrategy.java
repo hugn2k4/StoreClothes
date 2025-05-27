@@ -20,7 +20,6 @@ public class ProductDataLoadStrategy implements DataLoadStrategy<Product> {
     @Override
     public LiveData<List<Product>> loadData() {
         MutableLiveData<List<Product>> productsLiveData = new MutableLiveData<>();
-        
         firestore.collection("products")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -37,6 +36,25 @@ public class ProductDataLoadStrategy implements DataLoadStrategy<Product> {
                 });
                 
         return productsLiveData;
+    }
+    @Override
+    public LiveData<Product> loadById(String id) {
+        MutableLiveData<Product> productLiveData = new MutableLiveData<>();
+
+        firestore.collection("products")
+                .document(id)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Product product = documentSnapshot.toObject(Product.class);
+                        productLiveData.setValue(product);
+                    } else {
+                        productLiveData.setValue(null);
+                    }
+                })
+                .addOnFailureListener(e -> productLiveData.setValue(null));
+
+        return productLiveData;
     }
 
     @Override

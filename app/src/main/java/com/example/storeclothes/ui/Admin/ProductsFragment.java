@@ -1,5 +1,6 @@
 package com.example.storeclothes.ui.Admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ public class ProductsFragment extends Fragment {
     private BaseManager<Product> productManager;
     private Button btnUndo;
     private CommandInvoker commandInvoker;
+    private static final int ADD_PRODUCT_REQUEST = 1001;
+    private static final int EDIT_PRODUCT_REQUEST = 1002;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class ProductsFragment extends Fragment {
         // Thiết lập RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ProductAdapter adapter = new ProductAdapter(new ArrayList<>(), this::onDeleteProduct);
+        adapter.setOnItemClickListener(this::onEditProduct); // Thêm listener cho sự kiện click vào sản phẩm
         recyclerView.setAdapter(adapter);
 
         // Load dữ liệu sản phẩm
@@ -59,8 +63,21 @@ public class ProductsFragment extends Fragment {
         // Thiết lập sự kiện
         btnUndo.setOnClickListener(v -> undoLastCommand());
         fabAddProduct.setOnClickListener(v -> {
+            // Thêm log để kiểm tra
+            Toast.makeText(getContext(), "Đang mở form thêm sản phẩm", Toast.LENGTH_SHORT).show();
+            
             // Mở màn hình thêm sản phẩm
+            Intent intent = new Intent(getActivity(), ProductFormActivity.class);
+            startActivity(intent);
         });
+    }
+
+    // Thêm phương thức xử lý sự kiện click vào sản phẩm để chỉnh sửa
+    private void onEditProduct(Product product) {
+        Intent intent = new Intent(getActivity(), ProductFormActivity.class);
+        intent.putExtra("productId", product.getProductId());
+        intent.putExtra("categoryId", product.getCategoryId());
+        startActivity(intent);
     }
 
     private void loadProducts() {
@@ -75,10 +92,12 @@ public class ProductsFragment extends Fragment {
         // Sử dụng Command Pattern để xóa sản phẩm
         DeleteProductCommand deleteCommand = new DeleteProductCommand(productId);
         commandInvoker.executeCommand(deleteCommand);
+        ProductAdapter adapter = (ProductAdapter) recyclerView.getAdapter();
+        adapter.removeProductById(productId);
         Toast.makeText(getContext(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
         updateUndoButtonState();
     }
-
+    
     private void undoLastCommand() {
         if (commandInvoker.canUndo()) {
             commandInvoker.undoLastCommand();
@@ -89,6 +108,21 @@ public class ProductsFragment extends Fragment {
     }
 
     private void updateUndoButtonState() {
+        btnUndo.setVisibility(commandInvoker.canUndo() ? View.VISIBLE : View.GONE);
         btnUndo.setEnabled(commandInvoker.canUndo());
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == ADD_PRODUCT_REQUEST) {
+                Toast.makeText(getContext(), "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                loadProducts();
+            } else if (requestCode == EDIT_PRODUCT_REQUEST) {
+                Toast.makeText(getContext(), "Cập nhật sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                loadProducts();
+            }
+        }
     }
 }
