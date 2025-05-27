@@ -49,8 +49,9 @@ public class CartRepository {
             } else {
                 cartItems = new ArrayList<>();
                 // Create a new cart if it doesn't exist
-                Cart newCart = new Cart();
-                newCart.setCartItems(cartItems);
+                Cart newCart = new Cart.Builder()
+                        .setCartItems(cartItems)
+                        .build();
                 cartRef.set(newCart);
             }
 
@@ -125,9 +126,12 @@ public class CartRepository {
                     List<Address> addressList = new ArrayList<>();
                     if (querySnapshot != null) {
                         for (DocumentSnapshot doc : querySnapshot) {
-                            Address address = doc.toObject(Address.class);
-                            if (address != null) {
-                                address.setId(doc.getId());
+                            Address tempAddress = doc.toObject(Address.class);
+                            if (tempAddress != null) {
+                                Address address = new Address.Builder()
+                                        .setId(doc.getId())
+                                        .setAddress(tempAddress.getAddress())
+                                        .build();
                                 addressList.add(address);
                             }
                         }

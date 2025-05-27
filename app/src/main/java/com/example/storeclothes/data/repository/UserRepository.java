@@ -9,7 +9,7 @@ import android.util.Base64;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.storeclothes.data.firebase.FirebaseFirestoreSingleton;
+import com.example.storeclothes.data.firebase.FirebaseFireStoreSingleton;
 import com.example.storeclothes.data.model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,7 +34,7 @@ public class UserRepository {
     private static final String IMAGEKIT_PRIVATE_KEY = "private_IwsI+3E5LZq5gDM7d8wYhq0VIhQ=";
 
     private UserRepository() {
-        this.firestore = FirebaseFirestoreSingleton.getInstance();
+        this.firestore = FirebaseFireStoreSingleton.getInstance();
     }
 
     public static UserRepository getInstance() {

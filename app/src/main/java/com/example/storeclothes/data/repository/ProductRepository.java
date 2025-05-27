@@ -1,5 +1,7 @@
 package com.example.storeclothes.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -67,7 +69,6 @@ public class ProductRepository {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Xử lý lỗi nếu cần
                     productLiveData.setValue(null);
                 });
 
@@ -82,13 +83,12 @@ public class ProductRepository {
                     List<Product> productList = new ArrayList<>();
                     for (var doc : queryDocumentSnapshots) {
                         Product product = doc.toObject(Product.class);
-                        product.setProductId(doc.getId());
                         productList.add(product);
                     }
                     liveData.postValue(productList);
                 })
                 .addOnFailureListener(e -> {
-                    liveData.postValue(new ArrayList<>()); // trả về list rỗng khi lỗi
+                    liveData.postValue(new ArrayList<>());
                 });
         return liveData;
     }

@@ -4,28 +4,19 @@ public class Address {
     private String id;
     private String address;
 
-    public Address() { }
     private Address(Builder builder) {
         this.id = builder.id;
         this.address = builder.address;
     }
-    public String getId() {
-        return id;
+    public Address() {
     }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
+
+    public String getId() { return id; }
+    public String getAddress() { return address; }
+
     public static class Builder {
         private String id;
         private String address;
-
-        public Builder() { }
 
         public Builder setId(String id) {
             this.id = id;

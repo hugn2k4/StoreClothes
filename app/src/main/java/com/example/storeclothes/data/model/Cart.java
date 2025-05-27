@@ -9,7 +9,13 @@ public class Cart {
 
     private Cart(Builder builder) {
         this.userId = builder.userId;
-        this.cartItems = builder.cartItems;
+        this.cartItems = new ArrayList<>(builder.cartItems);
+    }
+    public Cart(){}
+
+    public String getUserId() { return userId; }
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
 
     public static class Builder {
@@ -22,7 +28,7 @@ public class Cart {
         }
 
         public Builder setCartItems(List<CartItem> cartItems) {
-            this.cartItems = cartItems;
+            this.cartItems = new ArrayList<>(cartItems);
             return this;
         }
 
@@ -35,10 +41,4 @@ public class Cart {
             return new Cart(this);
         }
     }
-    public Cart() {}
-
-    public String getUserId() { return userId; }
-    public List<CartItem> getCartItems() { return cartItems; }
-    public void setCartItems(List<CartItem> cartItems) { this.cartItems = cartItems; }
-
 }

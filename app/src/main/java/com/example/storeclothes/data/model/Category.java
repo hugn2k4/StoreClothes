@@ -5,27 +5,12 @@ public class Category {
     private String name;
     private String imageUrl;
 
-    // Constructor private để bắt buộc tạo đối tượng qua Builder
     private Category(Builder builder) {
         this.categoryId = builder.categoryId;
         this.name = builder.name;
         this.imageUrl = builder.imageUrl;
     }
-    public Category() {}
 
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    // Builder class
     public static class Builder {
         private String categoryId;
         private String name;
@@ -50,4 +35,10 @@ public class Category {
             return new Category(this);
         }
     }
+
+    public Category() {}
+
+    public String getCategoryId() { return categoryId; }
+    public String getName() { return name; }
+    public String getImageUrl() { return imageUrl; }
 }

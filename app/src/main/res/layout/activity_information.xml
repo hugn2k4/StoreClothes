@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Fragment.Profile.InformationActivity">
+    tools:context=".ui.Customer.Profile.InformationActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
