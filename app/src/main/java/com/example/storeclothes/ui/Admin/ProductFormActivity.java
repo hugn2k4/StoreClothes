@@ -217,12 +217,12 @@ public class ProductFormActivity extends AppCompatActivity {
 
     private void saveProductToFirestore(String name, String description, double price, String categoryId, List<String> images) {
         Product product = new Product.Builder()
-                .setProductId(productId)
-                .setName(name)
-                .setDescription(description)
-                .setPrice(price)
-                .setCategoryId(categoryId)
-                .setImages(images)
+                .productId(productId)
+                .name(name)
+                .description(description)
+                .price(price)
+                .categoryId(categoryId)
+                .images(images)
                 .build();
 
         productManager.add(product).observe(this, success -> {
