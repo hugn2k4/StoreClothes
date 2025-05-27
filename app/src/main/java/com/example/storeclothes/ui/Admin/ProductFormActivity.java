@@ -55,12 +55,6 @@ public class ProductFormActivity extends AppCompatActivity {
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Replace this line:
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
-        // With this:
-        // Thay thế dòng này:
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         // Bằng đoạn mã này:
         if (getSupportActionBar() != null) {
